@@ -58,7 +58,7 @@ public class ParkingTickets {
 	 * non-int value, then return 0.
 	 * 
 	 * @param rawInfo
-	 * @return
+	 * @return Converted int value or 0 if input data is invalid
 	 */
 	private int emptyIntCellHandler(String rawInfo) {
 		if (rawInfo.isEmpty()) {
@@ -76,8 +76,9 @@ public class ParkingTickets {
 	/**
 	 * Check if input String can be converted into double. If it is either empty or
 	 * non-double value, then return 0.
+	 * 
 	 * @param rawInfo
-	 * @return
+	 * @return Converted double value or 0.0 if input data is invalid
 	 */
 	private double emptyDoubleCellHandler(String rawInfo) {
 		if (rawInfo.isEmpty()) {
@@ -92,6 +93,7 @@ public class ParkingTickets {
 	}
 
 	/**
+	 * Get instance variable values of an object and return them as a String array
 	 * 
 	 * @return Instance variables in String array
 	 */

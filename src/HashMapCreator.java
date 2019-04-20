@@ -9,18 +9,25 @@ import java.util.*;
  */
 public class HashMapCreator {
 
-	// instance variable
+	/**
+	 * instance variable
+	 */
 	private HashMap<Integer, ParkingTickets> parkingTicketData;
 
-	// constructor
+	/**
+	 * constructor
+	 * 
+	 * @param cleanedData
+	 */
 	public HashMapCreator(HashMap<Integer, ParkingTickets> cleanedData) {
 		parkingTicketData = cleanedData;
 	}
 
 	/***
+	 * Take raw data from a .csv file as an input and remove invalid data set
 	 * 
 	 * @param rawDataFromCSV
-	 * @return
+	 * @return Cleaned Data in HashMap format
 	 */
 	public HashMap<Integer, ParkingTickets> cleanRawData(HashMap<Integer, ParkingTickets> rawDataFromCSV) {
 		DataCleaner dc = new DataCleaner(rawDataFromCSV);
