@@ -1,3 +1,9 @@
+/***
+ * Creates an object to represent a parking ticket information
+ * 
+ * @author Chan Woo Yang
+ *
+ */
 
 public class ParkingTickets {
 
@@ -16,43 +22,11 @@ public class ParkingTickets {
 	private double longitude;
 
 	/**
+	 * Constructor - Goes through each element of the input String array and assign
+	 * each data to instance variables
 	 * 
-	 * @param rawInfo
-	 * @return
-	 */
-	private int emptyIntCellHandler(String rawInfo) {
-		if (rawInfo.isEmpty()) {
-			return 0;
-		} else {
-			try {
-				return Integer.parseInt(rawInfo);
-			} catch (NumberFormatException e) {
-				return 0;
-			}
-
-		}
-	}
-
-	/**
-	 * 
-	 * @param rawInfo
-	 * @return
-	 */
-	private double emptyDoubleCellHandler(String rawInfo) {
-		if (rawInfo.isEmpty()) {
-			return 0.0;
-		} else {
-			try {
-				return Double.parseDouble(rawInfo);
-			} catch (NumberFormatException e) {
-				return 0.0;
-			}
-		}
-	}
-
-	/**
-	 * 
-	 * @param ticketColumn
+	 * @param ticketColumn - String Array from a row data of the parking citation
+	 *                     .csv file
 	 */
 	public ParkingTickets(String[] ticketColumn) {
 
@@ -79,9 +53,50 @@ public class ParkingTickets {
 
 	}
 
+	/**
+	 * Check if input String can be converted into int. If it is either empty or
+	 * non-int value, then return 0.
+	 * 
+	 * @param rawInfo
+	 * @return
+	 */
+	private int emptyIntCellHandler(String rawInfo) {
+		if (rawInfo.isEmpty()) {
+			return 0;
+		} else {
+			try {
+				return Integer.parseInt(rawInfo);
+			} catch (NumberFormatException e) {
+				return 0;
+			}
+
+		}
+	}
+
+	/**
+	 * Check if input String can be converted into double. If it is either empty or
+	 * non-double value, then return 0.
+	 * @param rawInfo
+	 * @return
+	 */
+	private double emptyDoubleCellHandler(String rawInfo) {
+		if (rawInfo.isEmpty()) {
+			return 0.0;
+		} else {
+			try {
+				return Double.parseDouble(rawInfo);
+			} catch (NumberFormatException e) {
+				return 0.0;
+			}
+		}
+	}
+
+	/**
+	 * 
+	 * @return Instance variables in String array
+	 */
 	public String[] getParkingTicketsArray() {
 		String[] ticketInfoArray = new String[19];
-
 		ticketInfoArray[0] = this.ticketNumber;
 		ticketInfoArray[1] = this.issueDate;
 		ticketInfoArray[2] = "" + this.issueTime;
@@ -101,7 +116,22 @@ public class ParkingTickets {
 		ticketInfoArray[16] = "" + this.fine;
 		ticketInfoArray[17] = "" + this.latitude;
 		ticketInfoArray[18] = "" + this.longitude;
-		
+
+//		String[] ticketInfoArray = new String[13];
+//		ticketInfoArray[0] = this.ticketNumber;
+//		ticketInfoArray[1] = this.issueDate;
+//		ticketInfoArray[2] = "" + this.issueTime;
+//		ticketInfoArray[3] = this.rpState;
+//		ticketInfoArray[4] = "" + this.rpExpire;
+//		ticketInfoArray[5] = this.maker;
+//		ticketInfoArray[6] = this.bodyStyle;
+//		ticketInfoArray[7] = this.color;
+//		ticketInfoArray[8] = this.violationCode;
+//		ticketInfoArray[9] = this.violationDescription;
+//		ticketInfoArray[10] = "" + this.fine;
+//		ticketInfoArray[11] = "" + this.latitude;
+//		ticketInfoArray[12] = "" + this.longitude;
+
 		return ticketInfoArray;
 	}
 

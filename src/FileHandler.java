@@ -7,6 +7,7 @@
  */
 
 import java.io.*;
+import java.time.Clock;
 import java.util.*;
 
 public class FileHandler {
@@ -15,7 +16,10 @@ public class FileHandler {
 	private String fileName;
 	private HashMap<Integer, ParkingTickets> ParkingTicketsRaw;
 
-	// constructor
+	/**
+	 * This is the constructor.	
+	 * @param fileName
+	 */
 	public FileHandler(String fileName) {
 		this.fileName = fileName;
 		File parkingCitationFile = new File(fileName);
@@ -46,12 +50,19 @@ public class FileHandler {
 		}
 	}
 
+	/**
+	 * Take parking tickets data in the Hashmap and write them in the new .csv file
+	 * 
+	 * @param cleanedData - all parking tickets data in the HashMap format
+	 */
 	public void writeToCSVFile(HashMap<Integer, ParkingTickets> cleanedData) {
 		try {
 			FileWriter fw = new FileWriter(fileName + "_cleaned.csv", false);
 			PrintWriter pw = new PrintWriter(fw);
 
 			// convert ParkingTickets object to String Array
+			Clock clock = Clock.systemUTC();
+			System.out.println("Write Start: " + clock.instant());
 			for (Integer currentData : cleanedData.keySet()) {
 				ParkingTickets currentTicket = cleanedData.get(currentData);
 				String[] currentDataArray = currentTicket.getParkingTicketsArray();
@@ -65,6 +76,7 @@ public class FileHandler {
 				pw.print("\n");
 				pw.flush();
 			}
+			System.out.println("Write End: " + clock.instant());
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

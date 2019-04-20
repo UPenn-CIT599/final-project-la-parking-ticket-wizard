@@ -1,10 +1,18 @@
+
+/***
+ * Clean the raw data from the .csv file
+ * 
+ * @author Chan Woo Yang
+ *
+ */
+
 import java.util.HashMap;
 
 public class DataCleaner {
-	
+
 	// instance variable
 	private HashMap<Integer, ParkingTickets> cleanedDataRaw = new HashMap<Integer, ParkingTickets>();
-	
+
 	// constructor
 	public DataCleaner(HashMap<Integer, ParkingTickets> rawDataFromCSV) {
 		for (Integer ticketNumber : rawDataFromCSV.keySet()) {
@@ -12,17 +20,23 @@ public class DataCleaner {
 			if (dataValidityChecker(currentTicket)) {
 				cleanedDataRaw.put(ticketNumber, currentTicket);
 			}
-			
 		}
 	}
-	
+
+	/**
+	 * Check the validity of input data as the ParkingTickets object. Check if core
+	 * data information is neither 0 nor null.
+	 * 
+	 * @param ticketInfo
+	 * @return
+	 */
 	private boolean dataValidityChecker(ParkingTickets ticketInfo) {
-		
+
 		if (ticketInfo.getIssueDate() == null || ticketInfo.getIssueDate().isEmpty()) {
 			return false;
 		} else if (ticketInfo.getIssueTime() == 0) {
 			return false;
-		} else if (ticketInfo.getLatitude() == 0.0 || ticketInfo.getLongitude() == 0.0){
+		} else if (ticketInfo.getLatitude() == 0.0 || ticketInfo.getLongitude() == 0.0) {
 			return false;
 		} else {
 			return true;
@@ -32,5 +46,5 @@ public class DataCleaner {
 	public HashMap<Integer, ParkingTickets> getCleanedDataRaw() {
 		return cleanedDataRaw;
 	}
-	
+
 }
