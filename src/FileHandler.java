@@ -1,15 +1,14 @@
 
-/***
- * Read raw data from .csv file and store them in the ArrayList
- * 
- * @author ChanWoo
- *
- */
-
 import java.io.*;
 import java.time.Clock;
 import java.util.*;
 
+/***
+ * Read raw data from .csv file and store them in the ArrayList
+ * 
+ * @author Chan Woo Yang
+ *
+ */
 public class FileHandler {
 
 	// instance variable
@@ -17,7 +16,8 @@ public class FileHandler {
 	private HashMap<Integer, ParkingTickets> ParkingTicketsRaw;
 
 	/**
-	 * This is the constructor.	
+	 * This is the constructor.
+	 * 
 	 * @param fileName
 	 */
 	public FileHandler(String fileName) {

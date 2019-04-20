@@ -1,13 +1,12 @@
 
+import java.util.*;
+
 /***
  * Using the cleanedData, creates different types of HashMap for Data Analysis
  * 
  * @author Chan Woo Yang
  *
  */
-
-import java.util.*;
-
 public class HashMapCreator {
 
 	// instance variable

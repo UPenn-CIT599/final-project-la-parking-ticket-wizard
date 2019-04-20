@@ -2,16 +2,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+/***
+ * JUnit Test for ParkingTickets Class
+ * 
+ * @author Chan Woo Yang
+ *
+ */
 class ParkingTicketsTest {
 
 	ParkingTickets parkingTicket;
 
 	@Test
 	void testGetParkingTicketsArray() {
-		String[] columnRawData = {"1106506446","2015-12-22T00:00:00","1110","","","CA","201511","","BMW","PA","BK","1200 W MIRAMAR","2A75","1","4000A1","NO EVIDENCE OF REG","50","99999","99999"};;
+		String[] columnRawData = { "1106506446", "2015-12-22T00:00:00", "1110", "", "", "CA", "201511", "", "BMW", "PA",
+				"BK", "1200 W MIRAMAR", "2A75", "1", "4000A1", "NO EVIDENCE OF REG", "50", "99999", "99999" };
 		parkingTicket = new ParkingTickets(columnRawData);
 		String[] instanceVariableArray = parkingTicket.getParkingTicketsArray();
-		
+
 		assertEquals("1106506446", instanceVariableArray[0]);
 		assertEquals("2015-12-22", instanceVariableArray[1]);
 		assertEquals("1110", instanceVariableArray[2]);
