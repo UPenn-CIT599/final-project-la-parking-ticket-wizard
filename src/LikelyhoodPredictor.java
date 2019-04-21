@@ -21,33 +21,22 @@ public class LikelyhoodPredictor {
 		}
 		int currentHourTickets = curTicketByTime.get(currentTime);
 		if (currentHourTickets == 0) {
-			// return "NOT LIKELY";
-			return "No historical ticket issued at this hour, park with your best judgement!";
+			 return "NOT LIKELY";
+		//	return "No historical ticket issued at this hour, park with your best judgement!";
 		}
 		int averageTicket = totalTickets / (24 - zeroCounter);
 		double percentile = currentHourTickets * 100 / totalTickets;
 		if (currentHourTickets >= averageTicket) {
-			// return "VERY LIKELY";
-			return "You are at higher than average likelyhood to get ticketed, your likelyhood percentile is at "
-					+ String.valueOf(percentile) + " park with extreme caution!";
+			return "VERY LIKELY";
+		//	return "You are at higher than average likelyhood to get ticketed, your likelyhood percentile is at "
+		//			+ String.valueOf(percentile) + " park with extreme caution!";
 		} else {
-//	        return "LIKELY";
-			return "You are at lower than average likelyhood to get ticketed, your likelyhood percentile is at "
-					+ String.valueOf(percentile) + " park with caution!";
+	        return "LIKELY";
+		//	return "You are at lower than average likelyhood to get ticketed, your likelyhood percentile is at "
+		//			+ String.valueOf(percentile) + " park with caution!";
 		}
 
 	}
 
-	public static void main(String[] args) {
-		LikelyhoodPredictor predictor = new LikelyhoodPredictor();
-		HashMap<String, Integer> history = new HashMap<String, Integer>();
-		for (int i = 1; i <= 24; i++) {
-			history.put(String.valueOf(i), i);
-		}
-		history.put(String.valueOf(8), 0);
-
-		System.out.println(predictor.predict(String.valueOf(3), history));
-		System.out.println(predictor.predict(String.valueOf(24), history));
-		System.out.println(predictor.predict(String.valueOf(8), history));
-	}
+	
 }
