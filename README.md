@@ -24,7 +24,7 @@ This is our project timeline:
 *	May 12 2019
 	* [ ]	Finalizing and packaging
 
-Team Member: Jin-Uk Luke Shin, Chan Woo Yang, Weiwen Zhao
+Team Member: [Jin-Uk Luke Shin](https://github.com/jinukshin), [Chan Woo Yang](https://github.com/chanwooyang), [Weiwen Zhao](https://github.com/weiwenz33)
 
 *******
 
