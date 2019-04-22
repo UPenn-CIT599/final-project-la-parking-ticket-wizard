@@ -1,5 +1,17 @@
 import java.util.*;
-
+/**
+ * This class will take in data from ParkingTicketDataProcessor class and 
+ * perform predictive analysis on the data.
+ * We have implemented likelyhood prediction using location filtered historical parking ticket
+ * distribution by hour of the day 
+ * We are currently looking into using Weka to do train a machine learning model for prediction, addtional 
+ * methods may be added to this class.
+ * However we are not sure if this particular dataset is going to suitable for machine learning application
+ * due to lack of labeling as we no data for people who violated parking regulation but didn't get ticketed.
+ *
+ * @author Weiwen Zhao
+ *
+ */
 public class LikelyhoodPredictor {
 	/**
 	 * This method takes in hashmap historical tickets issued by hour, then evaluate
