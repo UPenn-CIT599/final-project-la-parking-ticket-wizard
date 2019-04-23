@@ -5,15 +5,15 @@ import org.jfree.ui.RefineryUtilities;
 public class ParkingTicketRunner {
 	public static void main(String[] args) {
 		//HashMapCreator hmc = new HashMapCreator("parking-citations.csv_cleaned_no_empty_column.csv");
-		HashMapCreator hmc = new HashMapCreator("parking-citations_extrasmall.csv");
+		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
 
-		HashMap<String, ArrayList<ParkingTickets>> hashMapIssueDate = hmc.getGroupByIssueDate();
+		HashMap<Integer, ParkingTickets> parkingTicketRaw = fh.getParkingTicketsRaw();
 		
 		System.out.println("Days that ticket issues are collected");
-		System.out.println(hashMapIssueDate.size());
+		System.out.println(parkingTicketRaw.size());
 		System.out.println("");
 		
-		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(hmc.parkingTicketRaw);
+		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(parkingTicketRaw);
 
 		System.out.println("***********************************");
 		HashMap<String, Integer> ticketsByTime = ptdp.ticketCountsByHour();

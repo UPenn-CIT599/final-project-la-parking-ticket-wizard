@@ -29,9 +29,9 @@ import java.util.Map;
 
 public class ParkingTicketDataProcessor {
 	
-	private ArrayList<ParkingTickets> parkingTicketsRaw;
+	private HashMap<Integer, ParkingTickets> parkingTicketsRaw;
 	
-	public ParkingTicketDataProcessor (ArrayList<ParkingTickets> parkingTicketsData) {		
+	public ParkingTicketDataProcessor (HashMap<Integer, ParkingTickets> parkingTicketsData) {		
 		this.parkingTicketsRaw = parkingTicketsData;
 		//System.out.println(this.parkingTicketsRaw.size());
 	}
@@ -53,16 +53,16 @@ public class ParkingTicketDataProcessor {
 		
 		//System.out.println(Arrays.toString(timeByHour));
 		
-		for (int i = 0; i < this.parkingTicketsRaw.size(); i++) {
-			Integer ticketTime = this.parkingTicketsRaw.get(i).getIssueTime();
-			//System.out.println(ticketTime);
-			for (int j = 0; j < 24; j++) {
-				if ((ticketTime >= j * 100) && (ticketTime < (j + 1) * 100)) {
-					int ticketCount = ticketCountsByTime.containsKey(timeByHour[j]) ? ticketCountsByTime.get(timeByHour[j]) : 0;
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {
+			int ticketTime = parkingTicketsRaw.get(currentTicket).getIssueTime();
+			for (int i = 0; i < 24; i++) {
+				if ((ticketTime >= i * 100) && (ticketTime < (i + 1) * 100)) {
+					int ticketCount = ticketCountsByTime.containsKey(timeByHour[i]) ? ticketCountsByTime.get(timeByHour[i]) : 0;
 					ticketCount = ticketCount + 1;
-					ticketCountsByTime.put(timeByHour[j], ticketCount);
+					ticketCountsByTime.put(timeByHour[i], ticketCount);
 				}
 			}
+			
 		}
 		
 		// Using interface to sort by values of HashMap
@@ -86,9 +86,9 @@ public class ParkingTicketDataProcessor {
 	public HashMap<String, Integer> ticketCountsByViolation() {
 
 		HashMap<String, Integer> ticketCountsByViolationDescription = new HashMap<String, Integer>();
-
-		for (int i = 0; i < this.parkingTicketsRaw.size(); i++) {
-			String ticketVioDescription = this.parkingTicketsRaw.get(i).getViolationDescription();
+		
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {
+			String ticketVioDescription = this.parkingTicketsRaw.get(currentTicket).getViolationDescription();
 			int tVioDesCount = ticketCountsByViolationDescription.containsKey(ticketVioDescription) ? ticketCountsByViolationDescription.get(ticketVioDescription) : 0;
 			tVioDesCount = tVioDesCount + 1;
 			ticketCountsByViolationDescription.put(ticketVioDescription, tVioDesCount);
@@ -118,9 +118,9 @@ public class ParkingTicketDataProcessor {
 		
 		HashMap<String, Integer> ticketByFine = new HashMap<String, Integer>();
 		
-		for (int i = 0; i < this.parkingTicketsRaw.size(); i++) {			
-			String ticketVioDescription = this.parkingTicketsRaw.get(i).getViolationDescription();
-			Integer ticketFine = this.parkingTicketsRaw.get(i).getFine();	
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {			
+			String ticketVioDescription = this.parkingTicketsRaw.get(currentTicket).getViolationDescription();
+			Integer ticketFine = this.parkingTicketsRaw.get(currentTicket).getFine();	
 			if (!ticketByFine.containsKey(ticketVioDescription)) {
 				ticketByFine.put(ticketVioDescription, ticketFine);
 			}
@@ -154,9 +154,9 @@ public class ParkingTicketDataProcessor {
 		
 		//TODO: Write a separate helper method to convert dates to day of the week as this is called by two
 		//methods within this class.
-		for (int i = 0; i <this.parkingTicketsRaw.size(); i++) {
-			String tempTicket = this.parkingTicketsRaw.get(i).getIssueDate();
-			String ticketDate = tempTicket.substring(0, 9);
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {
+			String tempTicket = this.parkingTicketsRaw.get(currentTicket).getIssueDate();
+			String ticketDate = tempTicket;
 			String input_date = ticketDate;
 			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 			Date dt1 = null;
@@ -207,10 +207,10 @@ public class ParkingTicketDataProcessor {
 			//System.out.println(timeByHour[i]);
 		}
 
-		for (int i = 0; i < this.parkingTicketsRaw.size(); i++) {	
-			Integer ticketTime = this.parkingTicketsRaw.get(i).getIssueTime();	
-			String tempTicket = this.parkingTicketsRaw.get(i).getIssueDate();
-			String ticketDate = tempTicket.substring(0, 9);	
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {	
+			Integer ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();	
+			String tempTicket = this.parkingTicketsRaw.get(currentTicket).getIssueDate();
+			String ticketDate = tempTicket;	
 			String input_date = ticketDate;	
 			SimpleDateFormat format3 = new SimpleDateFormat("yyyy-MM-dd");	
 			Date dt2 = null;	
