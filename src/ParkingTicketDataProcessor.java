@@ -29,43 +29,41 @@ import java.util.Map;
 
 public class ParkingTicketDataProcessor {
 	
-	private ArrayList<ParkingTickets> parkingTicketsRaw;
-	
-	public ParkingTicketDataProcessor (ArrayList<ParkingTickets> parkingTicketsData) {		
-		this.parkingTicketsRaw = parkingTicketsData;
+	private HashMap<Integer, ParkingTickets> parkingTicketsRaw;
+	String[] timeByHour = new String[24];
+
+	public ParkingTicketDataProcessor (HashMap<Integer, ParkingTickets> curParkingTicketsData) {		
+		this.parkingTicketsRaw = curParkingTicketsData;
 		//System.out.println(this.parkingTicketsRaw.size());
+		for (int i = 0; i < 24; i++) {
+			String time = i + ":00-" + (i + 1) + ":00";
+			timeByHour[i] = time;
+			// System.out.println(timeByHour[i]);
+		}
 	}
-	
+
 	/**
 	 * Analyzing violation tickets by time of the day. Collect issued ticket counts by hour.
 	 * @return
 	 */
-	public HashMap<String, Integer> ticketCountsByHour () {
+	
+	public HashMap<String, Integer> ticketCountsByHour() {
+
+		HashMap<String, Integer> ticketCountsByTime = new HashMap<String, Integer>();
 		
-		HashMap<String, Integer> ticketCountsByTime = new HashMap<String, Integer>();	
-		String [] timeByHour = new String [24];
-		
-		for (int i = 0; i < 24; i++) {	
-			String time = i + ":00-" + (i+1) + ":00";
-			timeByHour[i] = time;
-			//System.out.println(timeByHour[i]);
-		}
-		
-		//System.out.println(Arrays.toString(timeByHour));
-		
-		for (int i = 0; i < this.parkingTicketsRaw.size(); i++) {
-			Integer ticketTime = this.parkingTicketsRaw.get(i).getIssueTime();
-			//System.out.println(ticketTime);
-			for (int j = 0; j < 24; j++) {
-				if ((ticketTime >= j * 100) && (ticketTime < (j + 1) * 100)) {
-					int ticketCount = ticketCountsByTime.containsKey(timeByHour[j]) ? ticketCountsByTime.get(timeByHour[j]) : 0;
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {
+			Integer ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();
+			// System.out.println(ticketTime);
+			for (int i = 0; i < 24; i++) {
+				if ((ticketTime >= i * 100) && (ticketTime < (i + 1) * 100)) {
+					int ticketCount = ticketCountsByTime.containsKey(timeByHour[i])
+							? ticketCountsByTime.get(timeByHour[i]) : 0;
 					ticketCount = ticketCount + 1;
-					ticketCountsByTime.put(timeByHour[j], ticketCount);
+					ticketCountsByTime.put(timeByHour[i], ticketCount);
 				}
 			}
 		}
-		
-		// Using interface to sort by values of HashMap
+		// Using Map interface and java stream to sort by values of HashMap
 		Map<String, Integer> unSortedMap = ticketCountsByTime;
 		LinkedHashMap<String, Integer> decendingSortedTCBT = new LinkedHashMap<>();
 		unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -73,39 +71,48 @@ public class ParkingTicketDataProcessor {
 		for (String key : decendingSortedTCBT.keySet()) {
 			System.out.println(key + " : " + decendingSortedTCBT.get(key));
 		}
-			
+
 		return decendingSortedTCBT;
-			
+
 	}
 
 	/**
-	 * Method to show ticket counts by violation description. Method sorts by violation counts and show 
-	 * top 10 violation categories.
-	 * @return HashMap of Violation description and its corresponding number of issed tickets.
+	 * Method to show ticket counts by violation description. Method sorts by
+	 * violation counts and show top 10 violation categories.
+	 * 
+	 * @return HashMap of Violation description and its corresponding number of
+	 *         issued tickets.
 	 */
 	public HashMap<String, Integer> ticketCountsByViolation() {
 
 		HashMap<String, Integer> ticketCountsByViolationDescription = new HashMap<String, Integer>();
 
-		for (int i = 0; i < this.parkingTicketsRaw.size(); i++) {
-			String ticketVioDescription = this.parkingTicketsRaw.get(i).getViolationDescription();
-			int tVioDesCount = ticketCountsByViolationDescription.containsKey(ticketVioDescription) ? ticketCountsByViolationDescription.get(ticketVioDescription) : 0;
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {
+			String ticketVioDescription = this.parkingTicketsRaw.get(currentTicket).getViolationDescription();
+			int tVioDesCount = ticketCountsByViolationDescription.containsKey(ticketVioDescription)
+					? ticketCountsByViolationDescription.get(ticketVioDescription) : 0;
 			tVioDesCount = tVioDesCount + 1;
 			ticketCountsByViolationDescription.put(ticketVioDescription, tVioDesCount);
 		}
-
+		
 		Map<String, Integer> unSortedMap = ticketCountsByViolationDescription;
 		LinkedHashMap<String, Integer> decendingSortedTCBVD = new LinkedHashMap<>();
 		unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.forEachOrdered(x -> decendingSortedTCBVD.put(x.getKey(), x.getValue()));
-		
-		// TODO: Add filtering to show only 10 violation descriptions.
-		for (String key : decendingSortedTCBVD.keySet()) {
+
+		ArrayList<String> sortedKeys = new ArrayList<String>(decendingSortedTCBVD.keySet());
+
+		for (int i = 0; i < 10; i++) {
+			String key = sortedKeys.get(i);
+			System.out.println((key + " : " + decendingSortedTCBVD.get(key)));
+		}
+		/* Printing all descriptions : used initially to understand data trend.
+		 * for (String key : decendingSortedTCBVD.keySet()) {
 			if (decendingSortedTCBVD.get(key) > 1) {
 				System.out.println(key + " : " + decendingSortedTCBVD.get(key));
 			}
-		}
-
+		}*/
+		 
 		return decendingSortedTCBVD;
 
 	}
@@ -118,9 +125,9 @@ public class ParkingTicketDataProcessor {
 		
 		HashMap<String, Integer> ticketByFine = new HashMap<String, Integer>();
 		
-		for (int i = 0; i < this.parkingTicketsRaw.size(); i++) {			
-			String ticketVioDescription = this.parkingTicketsRaw.get(i).getViolationDescription();
-			Integer ticketFine = this.parkingTicketsRaw.get(i).getFine();	
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {			
+			String ticketVioDescription = this.parkingTicketsRaw.get(currentTicket).getViolationDescription();
+			Integer ticketFine = this.parkingTicketsRaw.get(currentTicket).getFine();	
 			if (!ticketByFine.containsKey(ticketVioDescription)) {
 				ticketByFine.put(ticketVioDescription, ticketFine);
 			}
@@ -131,45 +138,57 @@ public class ParkingTicketDataProcessor {
 		unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 			.forEachOrdered(x -> decendingSortedTBF.put(x.getKey(), x.getValue()));
 	
-		// TODO: Add filtering to show only 10 highest fines.
-		for (String key : decendingSortedTBF.keySet()) {
+		ArrayList<String> sortedKeys = new ArrayList<String>(decendingSortedTBF.keySet());
+
+		for (int i = 0; i < 10; i++) {
+			String key = sortedKeys.get(i);
+			System.out.println((key + " : " + decendingSortedTBF.get(key)));
+		}
+		/* Printing all descriptions : used initially to understand data trend.
+		 * for (String key : decendingSortedTBF.keySet()) {
 			if(decendingSortedTBF.get(key) >= 25) {
 				System.out.println(key + " : " + decendingSortedTBF.get(key));
 			}
-		}
+		}*/
 		
 		return decendingSortedTBF;
 	
 	}
+	/**
+	 * Helper Method to convert issue dates by day of the week. Date to day conversion 
+	 * using SimpleDataFormat.
+	 * @param curDate
+	 * @return
+	 */
+	public String dateToDayConversion(String curDate) {
+		
+		String input_date = curDate;
+		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		Date dt1 = null;
+		String ticketDay = null;
+		try {
+			dt1 = format1.parse(input_date);
+			DateFormat format2 = new SimpleDateFormat("EEEE");
+			ticketDay = format2.format(dt1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}			
+		return ticketDay;		
+	}
 	
 	/**
-	 * Method to convert issue dates by day of the week. Use date to day conversion SimpleDataFormat.
 	 * This method will tell which day of the week has the most number of issued tickets.
 	 * @return HashMap contains day of the week and number of violations per day of the week.
 	 */
 	
-	public HashMap<String, Integer> ticketsByDay () {
+	public HashMap<String, Integer> ticketsByDay() {
 		
 		HashMap<String, Integer> ticketsByDay = new HashMap<String, Integer>();
 		
-		//TODO: Write a separate helper method to convert dates to day of the week as this is called by two
-		//methods within this class.
-		for (int i = 0; i <this.parkingTicketsRaw.size(); i++) {
-			String tempTicket = this.parkingTicketsRaw.get(i).getIssueDate();
-			String ticketDate = tempTicket.substring(0, 9);
-			String input_date = ticketDate;
-			SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-			Date dt1 = null;
-			String ticketDay = null;
-			try {
-				dt1 = format1.parse(input_date);
-				DateFormat format2 = new SimpleDateFormat("EEEE");
-				ticketDay = format2.format(dt1);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
-			//System.out.println(ticketDay);			
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {
+			String ticketDate = this.parkingTicketsRaw.get(currentTicket).getIssueDate();			
+			String ticketDay = dateToDayConversion(ticketDate);
 			int ticketCountsPerDay = ticketsByDay.containsKey(ticketDay) ? ticketsByDay.get(ticketDay) : 0;
 			ticketCountsPerDay = ticketCountsPerDay + 1;
 			ticketsByDay.put(ticketDay, ticketCountsPerDay);
@@ -188,7 +207,8 @@ public class ParkingTicketDataProcessor {
 	}
 	
 	/**
-	 * This method collects number of issued violation tickets by time of the day. This will tell us what time
+	 * This method collects number of issued violation tickets by time of the day. This will tell us 
+	 * what time
 	 * of the day has more issued tickets.
 	 * @return
 	 */
@@ -199,36 +219,13 @@ public class ParkingTicketDataProcessor {
 		ArrayList <String> ticketsByDayTime = new ArrayList<String>();
 		HashMap<String, Integer> ticketCountsByDayTime = new HashMap<String, Integer>();
 
-		String [] timeByHour = new String [24];
-
-		for (int i = 0; i < 24; i++) {
-			String time = i + ":00-" + (i+1) + ":00";
-			timeByHour[i] = time;
-			//System.out.println(timeByHour[i]);
-		}
-
-		for (int i = 0; i < this.parkingTicketsRaw.size(); i++) {	
-			Integer ticketTime = this.parkingTicketsRaw.get(i).getIssueTime();	
-			String tempTicket = this.parkingTicketsRaw.get(i).getIssueDate();
-			String ticketDate = tempTicket.substring(0, 9);	
-			String input_date = ticketDate;	
-			SimpleDateFormat format3 = new SimpleDateFormat("yyyy-MM-dd");	
-			Date dt2 = null;	
-			String ticketDay = null;	
-			try {	
-				dt2 = format3.parse(input_date);		
-				DateFormat format4 = new SimpleDateFormat("EEEE");		
-				ticketDay = format4.format(dt2);		
-			} catch (ParseException e) {		
-				// TODO Auto-generated catch block		
-				e.printStackTrace();		
-			}	
+		for (Integer currentTicket : parkingTicketsRaw.keySet()) {	
+			Integer ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();	
+			String ticketDate = this.parkingTicketsRaw.get(currentTicket).getIssueDate();
+			String ticketDay = dateToDayConversion(ticketDate);
 			ticketsByDay.add(ticketDay);	
 			ticketsByTime.add(ticketTime);
 		}
-		
-		//System.out.println(ticketsByDay);
-		//System.out.println(ticketsByTime);
 		
 		//TODO: For each day, sort hours by number of tickets.
 		for (int i = 0; i < ticketsByDay.size(); i++) {
@@ -247,8 +244,7 @@ public class ParkingTicketDataProcessor {
 		
 		//System.out.println(ticketsByDayTime);
 		
-		for (int i = 0; i < ticketsByDayTime.size(); i++) {
-			
+		for (int i = 0; i < ticketsByDayTime.size(); i++) {			
 			String ticketStat = ticketsByDayTime.get(i);
 			int ticketCount = ticketCountsByDayTime.containsKey(ticketStat) ? ticketCountsByDayTime.get(ticketStat) : 0;
 			ticketCount = ticketCount + 1;
@@ -260,7 +256,7 @@ public class ParkingTicketDataProcessor {
         Collections.sort(sortedKeys);
         System.out.println("");
         
-        //TODO: Below is sample code snippets for Tueday. Need to create for all 7 days and hashmaps 
+        //TODO: Below is sample code snippets for Tuesday. Need to create for all 7 days and hashmaps 
         //containing ticket counts and probabilities.
         
 		HashMap<String, Integer> ticketStatForTue = new HashMap<String, Integer>();
