@@ -52,8 +52,7 @@ public class ParkingTicketDataProcessor {
 		HashMap<String, Integer> ticketCountsByTime = new HashMap<String, Integer>();
 		
 		for (Integer currentTicket : parkingTicketsRaw.keySet()) {
-			Integer ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();
-			// System.out.println(ticketTime);
+			int ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();
 			for (int i = 0; i < 24; i++) {
 				if ((ticketTime >= i * 100) && (ticketTime < (i + 1) * 100)) {
 					int ticketCount = ticketCountsByTime.containsKey(timeByHour[i])
@@ -223,6 +222,11 @@ public class ParkingTicketDataProcessor {
 			Integer ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();	
 			String ticketDate = this.parkingTicketsRaw.get(currentTicket).getIssueDate();
 			String ticketDay = dateToDayConversion(ticketDate);
+		for (int i = 0; i < 24; i++) {
+			String time = i + ":00-" + (i+1) + ":00";
+			timeByHour[i] = time;
+			//System.out.println(timeByHour[i]);
+		}
 			ticketsByDay.add(ticketDay);	
 			ticketsByTime.add(ticketTime);
 		}

@@ -21,7 +21,7 @@ public class FileHandler {
 	 * @param fileName
 	 */
 	public FileHandler(String fileName) {
-		this.fileName = fileName;
+		this.fileName = fileName.split("\\.")[0]; // remove file extension
 		File parkingCitationFile = new File(fileName);
 		ParkingTicketsRaw = new HashMap<Integer, ParkingTickets>();
 		try {

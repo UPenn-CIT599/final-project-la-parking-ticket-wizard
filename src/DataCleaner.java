@@ -41,7 +41,9 @@ public class DataCleaner {
 			return false;
 		} else if (ticketInfo.getIssueTime() == 0) {
 			return false;
-		} else if (ticketInfo.getLatitude() == 0.0 || ticketInfo.getLongitude() == 0.0) {
+		} else if (ticketInfo.getLatitude() == 0.0 || ticketInfo.getLatitude() == 99999.0) {
+			return false;
+		} else if (ticketInfo.getLongitude() == 0.0 || ticketInfo.getLongitude() == 99999.0) {
 			return false;
 		} else {
 			return true;

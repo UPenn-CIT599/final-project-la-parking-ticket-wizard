@@ -4,6 +4,7 @@ import org.jfree.ui.RefineryUtilities;
 
 public class ParkingTicketRunner {
 	public static void main(String[] args) {
+
 		//FileHandler fh = new FileHandler("parking-citations_extrasmall.csv");		
 		FileHandler fh = new FileHandler("parking-citations.csv_cleaned_with_empty_column.csv");
 

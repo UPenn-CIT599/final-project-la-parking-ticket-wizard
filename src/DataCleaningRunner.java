@@ -19,7 +19,7 @@ public class DataCleaningRunner {
 
 		DataCleaner dc = new DataCleaner(rawDataHashMap);
 		System.out.println("Raw Data Size: " + rawDataHashMap.size());
-		System.out.println("Cleaned Data Size" + dc.getCleanedDataRaw().size());
+		System.out.println("Cleaned Data Size: " + dc.getCleanedDataRaw().size());
 
 		fh.writeToCSVFile(dc.getCleanedDataRaw());
 
