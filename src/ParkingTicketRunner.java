@@ -4,25 +4,25 @@ import org.jfree.ui.RefineryUtilities;
 
 public class ParkingTicketRunner {
 	public static void main(String[] args) {
-		//HashMapCreator hmc = new HashMapCreator("parking-citations.csv_cleaned_no_empty_column.csv");
-		HashMapCreator hmc = new HashMapCreator("parking-citations_extrasmall.csv");
+		//FileHandler fh = new FileHandler("parking-citations_extrasmall.csv");		
+		FileHandler fh = new FileHandler("parking-citations.csv_cleaned_with_empty_column.csv");
 
-		HashMap<String, ArrayList<ParkingTickets>> hashMapIssueDate = hmc.getGroupByIssueDate();
+		HashMap<Integer, ParkingTickets> hashMapPrakingTicketsRaw = fh.getParkingTicketsRaw();
 		
 		System.out.println("Days that ticket issues are collected");
-		System.out.println(hashMapIssueDate.size());
+		System.out.println(hashMapPrakingTicketsRaw.size());
 		System.out.println("");
 		
-		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(hmc.parkingTicketRaw);
+		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(hashMapPrakingTicketsRaw);
 
 		System.out.println("***********************************");
 		HashMap<String, Integer> ticketsByTime = ptdp.ticketCountsByHour();
-		GraphTicketsByHour gtbh = new GraphTicketsByHour("Tickets By 3 Hours", ticketsByTime);
+		GraphTicketsByHour gtbh = new GraphTicketsByHour("Tickets By Hour", ticketsByTime);
 		gtbh.setSize(560, 367);
 		RefineryUtilities.centerFrameOnScreen(gtbh);
 		gtbh.setVisible(true);
 		
-		//ptdp.ticketCountsByHour();
+		ptdp.ticketCountsByHour();
 		System.out.println("");
 
 		//ParkingTicketByViolationDescription ptbv = new ParkingTicketByViolationDescription(hmc.parkingTicketRaw);
