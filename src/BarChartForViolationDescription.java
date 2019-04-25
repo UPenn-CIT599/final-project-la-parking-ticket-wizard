@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -44,15 +45,20 @@ public class BarChartForViolationDescription extends JFrame {
 	
 	public  CategoryDataset createDatasetForBarChart() {
 		
-		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		
-		for (String key : this.ticketByVioDescription.keySet()) {
-			
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();		
+		ArrayList<String> sortedKeys = new ArrayList<String>(this.ticketByVioDescription.keySet());
+
+		for (int i = 0; i < 10; i++) {
+			String key = sortedKeys.get(i);
+			dataset.addValue(this.ticketByVioDescription.get(key), "Violation Description", key);
+		}
+				
+		/*for (String key : this.ticketByVioDescription.keySet()) {
 			if ((!this.ticketByVioDescription.containsValue(null)) && (this.ticketByVioDescription.get(key) > 1)) {
 				//System.out.println("this is probing point");
 				dataset.addValue(this.ticketByVioDescription.get(key), "Violation Description", key);
 			}
-		}
+		}*/
 		return dataset;
 	}
 	
