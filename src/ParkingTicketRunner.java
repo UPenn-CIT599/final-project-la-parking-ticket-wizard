@@ -41,6 +41,7 @@ public class ParkingTicketRunner {
 		ptdp.ticketsByDay();
 		System.out.println("***********************************");
 		ptdp.ticketsByProbDayTime();
-		
+		//ptdp.printingDayTimeTickets();
+		System.out.println("***********************************");
 	}
 }
