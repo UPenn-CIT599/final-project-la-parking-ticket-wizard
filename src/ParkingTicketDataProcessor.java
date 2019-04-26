@@ -31,6 +31,22 @@ public class ParkingTicketDataProcessor {
 	
 	private HashMap<Integer, ParkingTickets> parkingTicketsRaw;
 	String[] timeByHour = new String[24];
+	HashMap<String, Integer> sortedMonTickets;
+	HashMap<String, Integer> sortedTueTickets;
+	HashMap<String, Integer> sortedWedTickets;
+	HashMap<String, Integer> sortedThuTickets;
+	HashMap<String, Integer> sortedFriTickets;
+	HashMap<String, Integer> sortedSatTickets;
+	HashMap<String, Integer> sortedSunTickets;
+	int totalTicketCounts = 0;
+	int totalTicketCountsForMonday = 0;
+	int totalTicketCountsForTuesday = 0;
+	int totalTicketCountsForWednesday = 0;
+	int totalTicketCountsForThursday = 0;
+	int totalTicketCountsForFriday = 0;
+	int totalTicketCountsForSaturday = 0;
+	int totalTicketCountsForSunday = 0;
+
 
 	public ParkingTicketDataProcessor (HashMap<Integer, ParkingTickets> curParkingTicketsData) {		
 		this.parkingTicketsRaw = curParkingTicketsData;
@@ -206,12 +222,28 @@ public class ParkingTicketDataProcessor {
 	}
 	
 	/**
+	 * Helper method to sort by ticket counts 
+	 * @param curHashMap
+	 * @return
+	 */
+	public HashMap<String, Integer> hashMapSorting (HashMap<String, Integer> curHashMap) {
+		
+		Map<String, Integer> unSortedMap = curHashMap;
+		LinkedHashMap<String, Integer> sortedByValueHashMap = new LinkedHashMap<>();
+		unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+				.forEachOrdered(x -> sortedByValueHashMap.put(x.getKey(), x.getValue()));
+		
+		return sortedByValueHashMap;
+	}
+	
+	
+	/**
 	 * This method collects number of issued violation tickets by time of the day. This will tell us 
 	 * what time
 	 * of the day has more issued tickets.
 	 * @return
 	 */
-	public HashMap<String, Integer> ticketsByProbDayTime () {
+	public void ticketsByProbDayTime () {
 
 		ArrayList <String> ticketsByDay = new ArrayList<String>();
 		ArrayList <Integer> ticketsByTime = new ArrayList<Integer>();
@@ -222,16 +254,11 @@ public class ParkingTicketDataProcessor {
 			Integer ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();	
 			String ticketDate = this.parkingTicketsRaw.get(currentTicket).getIssueDate();
 			String ticketDay = dateToDayConversion(ticketDate);
-		for (int i = 0; i < 24; i++) {
-			String time = i + ":00-" + (i+1) + ":00";
-			timeByHour[i] = time;
-			//System.out.println(timeByHour[i]);
-		}
+
 			ticketsByDay.add(ticketDay);	
 			ticketsByTime.add(ticketTime);
 		}
 		
-		//TODO: For each day, sort hours by number of tickets.
 		for (int i = 0; i < ticketsByDay.size(); i++) {
 			Integer ticketTime = ticketsByTime.get(i);
 			String ticketDay = ticketsByDay.get(i);	
@@ -245,9 +272,7 @@ public class ParkingTicketDataProcessor {
 				ticketsByDayTime.add(ticketDayTime);	
 			}					
 		}
-		
-		//System.out.println(ticketsByDayTime);
-		
+				
 		for (int i = 0; i < ticketsByDayTime.size(); i++) {			
 			String ticketStat = ticketsByDayTime.get(i);
 			int ticketCount = ticketCountsByDayTime.containsKey(ticketStat) ? ticketCountsByDayTime.get(ticketStat) : 0;
@@ -260,43 +285,129 @@ public class ParkingTicketDataProcessor {
         Collections.sort(sortedKeys);
         System.out.println("");
         
-        //TODO: Below is sample code snippets for Tuesday. Need to create for all 7 days and hashmaps 
-        //containing ticket counts and probabilities.
-        
+		HashMap<String, Integer> ticketStatForMon = new HashMap<String, Integer>();
 		HashMap<String, Integer> ticketStatForTue = new HashMap<String, Integer>();
-		int totalTicketCounts = 0;
-		int totalTicketCountsForTuesday = 0;
+		HashMap<String, Integer> ticketStatForWed = new HashMap<String, Integer>();
+		HashMap<String, Integer> ticketStatForThu = new HashMap<String, Integer>();
+		HashMap<String, Integer> ticketStatForFri = new HashMap<String, Integer>();
+		HashMap<String, Integer> ticketStatForSat = new HashMap<String, Integer>();
+		HashMap<String, Integer> ticketStatForSun = new HashMap<String, Integer>();
 		
-		for (String key : sortedKeys) {
-			
-			System.out.println(key + ": " + ticketCountsByDayTime.get(key));		
+		for (String key : sortedKeys) {			
+			//System.out.println(key + ": " + ticketCountsByDayTime.get(key));		
 			totalTicketCounts = totalTicketCounts + ticketCountsByDayTime.get(key);
-					
-			if (key.contains("Tuesday")) {
+			
+			if (key.contains("Monday")) {
+				ticketStatForMon.put(key, ticketCountsByDayTime.get(key));
+				totalTicketCountsForMonday = totalTicketCountsForMonday + ticketCountsByDayTime.get(key);
+			}
+			else if (key.contains("Tuesday")) {
 				ticketStatForTue.put(key, ticketCountsByDayTime.get(key));
 				totalTicketCountsForTuesday = totalTicketCountsForTuesday + ticketCountsByDayTime.get(key);
 			}
+			else if (key.contains("Wednesday")) {
+				ticketStatForWed.put(key, ticketCountsByDayTime.get(key));
+				totalTicketCountsForWednesday = totalTicketCountsForWednesday + ticketCountsByDayTime.get(key);
+			}
+			else if (key.contains("Thursday")) {
+				ticketStatForThu.put(key, ticketCountsByDayTime.get(key));
+				totalTicketCountsForThursday = totalTicketCountsForThursday + ticketCountsByDayTime.get(key);
+			}
+			else if (key.contains("Friday")) {
+				ticketStatForFri.put(key, ticketCountsByDayTime.get(key));
+				totalTicketCountsForFriday = totalTicketCountsForFriday + ticketCountsByDayTime.get(key);
+			}
+			else if (key.contains("Saturday")) {
+				ticketStatForSat.put(key, ticketCountsByDayTime.get(key));
+				totalTicketCountsForSaturday = totalTicketCountsForSaturday + ticketCountsByDayTime.get(key);
+			}
+			else if (key.contains("Sunday")) {
+				ticketStatForSun.put(key, ticketCountsByDayTime.get(key));
+				totalTicketCountsForSunday = totalTicketCountsForSunday + ticketCountsByDayTime.get(key);
+			}
+		}
+		
+		HashMap<String, Integer> sortedMonTickets = hashMapSorting(ticketStatForMon);
+		HashMap<String, Integer> sortedTueTickets = hashMapSorting(ticketStatForTue);
+		HashMap<String, Integer> sortedWedTickets = hashMapSorting(ticketStatForWed);
+		HashMap<String, Integer> sortedThuTickets = hashMapSorting(ticketStatForThu);
+		HashMap<String, Integer> sortedFriTickets = hashMapSorting(ticketStatForFri);
+		HashMap<String, Integer> sortedSatTickets = hashMapSorting(ticketStatForSat);
+		HashMap<String, Integer> sortedSunTickets = hashMapSorting(ticketStatForSun);
+		
+		for (String key : sortedMonTickets.keySet()) {
+			System.out.println(key + " ticket count is " + sortedMonTickets.get(key) + " and probability is " 
+					+ (sortedMonTickets.get(key)*1.0/totalTicketCountsForMonday)*100.0);		
 		}
 		System.out.println("");
-		System.out.println("Total Tickets : " + totalTicketCounts);
-		System.out.println("**************************************");
+		System.out.println("***********************************");
 		System.out.println("");
-		System.out.println("Total Tuesday Tickets : " + totalTicketCountsForTuesday);
-		System.out.println("**************************************");
-		System.out.println("");
-		
-		Map<String, Integer> tempMapTue = ticketStatForTue;
-        ArrayList<String> sortedKeysTue = new ArrayList<>(tempMapTue.keySet());
-        Collections.sort(sortedKeysTue);
-	
-		for (String key : sortedKeysTue) {
-			System.out.println(key + " ticket count is " + ticketStatForTue.get(key) + " and probability is " + (ticketStatForTue.get(key)*1.0/totalTicketCountsForTuesday)*100.0);
-			
+		for (String key : sortedTueTickets.keySet()) {
+			System.out.println(key + " ticket count is " + sortedTueTickets.get(key) + " and probability is " 
+					+ (sortedTueTickets.get(key)*1.0/totalTicketCountsForTuesday)*100.0);		
 		}
-		//System.out.println(ticketStatForTue);
-		
-		return ticketCountsByDayTime;
-		
+		System.out.println("");
+		System.out.println("***********************************");
+		System.out.println("");
+		for (String key : sortedWedTickets.keySet()) {
+			System.out.println(key + " ticket count is " + sortedWedTickets.get(key) + " and probability is " 
+					+ (sortedWedTickets.get(key)*1.0/totalTicketCountsForWednesday)*100.0);		
+		}
+		System.out.println("");
+		System.out.println("***********************************");
+		System.out.println("");
+		for (String key : sortedThuTickets.keySet()) {
+			System.out.println(key + " ticket count is " + sortedThuTickets.get(key) + " and probability is " 
+					+ (sortedThuTickets.get(key)*1.0/totalTicketCountsForThursday)*100.0);		
+		}
+		System.out.println("");
+		System.out.println("***********************************");
+		System.out.println("");
+		for (String key : sortedFriTickets.keySet()) {
+			System.out.println(key + " ticket count is " + sortedFriTickets.get(key) + " and probability is " 
+					+ (sortedFriTickets.get(key)*1.0/totalTicketCountsForFriday)*100.0);		
+		}
+		System.out.println("");
+		System.out.println("***********************************");
+		System.out.println("");
+		for (String key : sortedSatTickets.keySet()) {
+			System.out.println(key + " ticket count is " + sortedSatTickets.get(key) + " and probability is " 
+					+ (sortedSatTickets.get(key)*1.0/totalTicketCountsForSaturday)*100.0);		
+		}
+		System.out.println("");
+		System.out.println("***********************************");
+		System.out.println("");
+		for (String key : sortedSunTickets.keySet()) {
+			System.out.println(key + " ticket count is " + sortedSunTickets.get(key) + " and probability is " 
+					+ (sortedSunTickets.get(key)*1.0/totalTicketCountsForSunday)*100.0);		
+		}
 	}
 	
+	public HashMap<String, Integer> getSortedMonTickets() {
+		return sortedMonTickets;
+	}
+
+	public HashMap<String, Integer> getSortedTueTickets() {
+		return sortedTueTickets;
+	}
+
+	public HashMap<String, Integer> getSortedWedTickets() {
+		return sortedWedTickets;
+	}
+
+	public HashMap<String, Integer> getSortedThuTickets() {
+		return sortedThuTickets;
+	}
+
+	public HashMap<String, Integer> getSortedFriTickets() {
+		return sortedFriTickets;
+	}
+
+	public HashMap<String, Integer> getSortedSatTickets() {
+		return sortedSatTickets;
+	}
+
+	public HashMap<String, Integer> getSortedSunTickets() {
+		return sortedSunTickets;
+	}
 }
