@@ -6,7 +6,7 @@ public class ParkingTicketRunner {
 	public static void main(String[] args) {
 
 		//FileHandler fh = new FileHandler("parking-citations_extrasmall.csv");		
-		FileHandler fh = new FileHandler("parking-citations.csv_cleaned_with_empty_column.csv");
+		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
 
 		HashMap<Integer, ParkingTickets> hashMapPrakingTicketsRaw = fh.getParkingTicketsRaw();
 		
@@ -23,7 +23,7 @@ public class ParkingTicketRunner {
 		RefineryUtilities.centerFrameOnScreen(gtbh);
 		gtbh.setVisible(true);
 		
-		ptdp.ticketCountsByHour();
+		//ptdp.ticketCountsByHour();
 		System.out.println("");
 
 		//ParkingTicketByViolationDescription ptbv = new ParkingTicketByViolationDescription(hmc.parkingTicketRaw);
