@@ -46,6 +46,7 @@ public class ParkingTicketDataProcessor {
 	int totalTicketCountsForFriday = 0;
 	int totalTicketCountsForSaturday = 0;
 	int totalTicketCountsForSunday = 0;
+	ArrayList<String> sortedKeysByVioDesc;
 
 
 	public ParkingTicketDataProcessor (HashMap<Integer, ParkingTickets> curParkingTicketsData) {		
@@ -84,11 +85,11 @@ public class ParkingTicketDataProcessor {
 		unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.forEachOrdered(x -> decendingSortedTCBT.put(x.getKey(), x.getValue()));
 		for (String key : decendingSortedTCBT.keySet()) {
-			System.out.println(key + " : " + decendingSortedTCBT.get(key));
+			System.out.print(key + "," + decendingSortedTCBT.get(key) + ",");
+			System.out.printf("%4.2f", (decendingSortedTCBT.get(key)*1.0/this.parkingTicketsRaw.size())*100.0);
+			System.out.println("%");
 		}
-
 		return decendingSortedTCBT;
-
 	}
 
 	/**
@@ -115,25 +116,24 @@ public class ParkingTicketDataProcessor {
 		unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.forEachOrdered(x -> decendingSortedTCBVD.put(x.getKey(), x.getValue()));
 
-		ArrayList<String> sortedKeys = new ArrayList<String>(decendingSortedTCBVD.keySet());
+		sortedKeysByVioDesc = new ArrayList<String>(decendingSortedTCBVD.keySet());
 
 		for (int i = 0; i < 10; i++) {
-			String key = sortedKeys.get(i);
+			String key = sortedKeysByVioDesc.get(i);
 			System.out.println((key + " : " + decendingSortedTCBVD.get(key)));
 		}
+		
 		/* Printing all descriptions : used initially to understand data trend.
 		 * for (String key : decendingSortedTCBVD.keySet()) {
 			if (decendingSortedTCBVD.get(key) > 1) {
 				System.out.println(key + " : " + decendingSortedTCBVD.get(key));
 			}
-		}*/
-		 
+		}*/		 
 		return decendingSortedTCBVD;
-
 	}
 	
 	/**
-	 * Method to sort tickets by Fines. Show top 10 most expensive ticket fines and violation descriptions.
+	 * Method to sort tickets by Fines. Show top 10 most violation description fines.
 	 * @return HashMap of ticket violation and corresponding fine.
 	 */
 	public HashMap<String, Integer> ticketsByFine () {
@@ -148,27 +148,26 @@ public class ParkingTicketDataProcessor {
 			}
 		}
 		
+		/* Finding Top 10 most expensive ticket fines.
 		Map<String, Integer> unSortedMap = ticketByFine;	
 		LinkedHashMap<String, Integer> decendingSortedTBF = new LinkedHashMap<>();	
 		unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 			.forEachOrdered(x -> decendingSortedTBF.put(x.getKey(), x.getValue()));
 	
 		ArrayList<String> sortedKeys = new ArrayList<String>(decendingSortedTBF.keySet());
-
 		for (int i = 0; i < 10; i++) {
-			String key = sortedKeys.get(i);
+			String key = sortedKeysByVioDesc.get(i);
 			System.out.println((key + " : " + decendingSortedTBF.get(key)));
-		}
-		/* Printing all descriptions : used initially to understand data trend.
-		 * for (String key : decendingSortedTBF.keySet()) {
-			if(decendingSortedTBF.get(key) >= 25) {
-				System.out.println(key + " : " + decendingSortedTBF.get(key));
-			}
 		}*/
 		
-		return decendingSortedTBF;
-	
+		// Printing fines for top 10 ticket violations
+		for (int i = 0; i < 10; i++) {
+			String key = sortedKeysByVioDesc.get(i);
+			System.out.println((key + " : $" + ticketByFine.get(key)));
+		}		
+		return ticketByFine;	
 	}
+	
 	/**
 	 * Helper Method to convert issue dates by day of the week. Date to day conversion 
 	 * using SimpleDataFormat.
@@ -196,7 +195,6 @@ public class ParkingTicketDataProcessor {
 	 * This method will tell which day of the week has the most number of issued tickets.
 	 * @return HashMap contains day of the week and number of violations per day of the week.
 	 */
-	
 	public HashMap<String, Integer> ticketsByDay() {
 		
 		HashMap<String, Integer> ticketsByDay = new HashMap<String, Integer>();
@@ -214,11 +212,11 @@ public class ParkingTicketDataProcessor {
 		unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
 				.forEachOrdered(x -> decendingSortedTCBD.put(x.getKey(), x.getValue()));
 		for (String key : decendingSortedTCBD.keySet()) {
-			System.out.println(key + " : " + decendingSortedTCBD.get(key));
+			System.out.print(key + "," + decendingSortedTCBD.get(key) + ",");
+			System.out.printf("%4.2f", (decendingSortedTCBD.get(key)*1.0/parkingTicketsRaw.size()*100.0));
+			System.out.println("%");
 		}
-		
-		return decendingSortedTCBD;
-		
+		return decendingSortedTCBD;		
 	}
 	
 	/**
@@ -235,8 +233,7 @@ public class ParkingTicketDataProcessor {
 		
 		return sortedByValueHashMap;
 	}
-	
-	
+		
 	/**
 	 * This method collects number of issued violation tickets by time of the day. This will tell us 
 	 * what time
@@ -336,50 +333,57 @@ public class ParkingTicketDataProcessor {
 		HashMap<String, Integer> sortedSunTickets = hashMapSorting(ticketStatForSun);
 		
 		for (String key : sortedMonTickets.keySet()) {
-			System.out.println(key + " ticket count is " + sortedMonTickets.get(key) + " and probability is " 
-					+ (sortedMonTickets.get(key)*1.0/totalTicketCountsForMonday)*100.0);		
+			System.out.print(key + " ticket count is " + sortedMonTickets.get(key) + " and probability is ");
+			System.out.printf("%4.2f", (sortedMonTickets.get(key)*1.0/totalTicketCountsForMonday)*100.0);
+			System.out.println("%");		
 		}
 		System.out.println("");
 		System.out.println("***********************************");
 		System.out.println("");
 		for (String key : sortedTueTickets.keySet()) {
-			System.out.println(key + " ticket count is " + sortedTueTickets.get(key) + " and probability is " 
-					+ (sortedTueTickets.get(key)*1.0/totalTicketCountsForTuesday)*100.0);		
+			System.out.print(key + " ticket count is " + sortedTueTickets.get(key) + " and probability is ");
+			System.out.printf("%4.2f", (sortedTueTickets.get(key)*1.0/totalTicketCountsForTuesday)*100.0);
+			System.out.println("%");
 		}
 		System.out.println("");
 		System.out.println("***********************************");
 		System.out.println("");
 		for (String key : sortedWedTickets.keySet()) {
-			System.out.println(key + " ticket count is " + sortedWedTickets.get(key) + " and probability is " 
-					+ (sortedWedTickets.get(key)*1.0/totalTicketCountsForWednesday)*100.0);		
+			System.out.print(key + " ticket count is " + sortedWedTickets.get(key) + " and probability is ");
+			System.out.printf("%4.2f", (sortedWedTickets.get(key)*1.0/totalTicketCountsForWednesday)*100.0);
+			System.out.println("%");
 		}
 		System.out.println("");
 		System.out.println("***********************************");
 		System.out.println("");
 		for (String key : sortedThuTickets.keySet()) {
-			System.out.println(key + " ticket count is " + sortedThuTickets.get(key) + " and probability is " 
-					+ (sortedThuTickets.get(key)*1.0/totalTicketCountsForThursday)*100.0);		
+			System.out.print(key + " ticket count is " + sortedThuTickets.get(key) + " and probability is ");
+			System.out.printf("%4.2f", (sortedThuTickets.get(key)*1.0/totalTicketCountsForThursday)*100.0);
+			System.out.println("%");
 		}
 		System.out.println("");
 		System.out.println("***********************************");
 		System.out.println("");
 		for (String key : sortedFriTickets.keySet()) {
-			System.out.println(key + " ticket count is " + sortedFriTickets.get(key) + " and probability is " 
-					+ (sortedFriTickets.get(key)*1.0/totalTicketCountsForFriday)*100.0);		
+			System.out.print(key + " ticket count is " + sortedFriTickets.get(key) + " and probability is ");
+			System.out.printf("%4.2f", (sortedFriTickets.get(key)*1.0/totalTicketCountsForFriday)*100.0);
+			System.out.println("%");
 		}
 		System.out.println("");
 		System.out.println("***********************************");
 		System.out.println("");
 		for (String key : sortedSatTickets.keySet()) {
-			System.out.println(key + " ticket count is " + sortedSatTickets.get(key) + " and probability is " 
-					+ (sortedSatTickets.get(key)*1.0/totalTicketCountsForSaturday)*100.0);		
+			System.out.print(key + " ticket count is " + sortedSatTickets.get(key) + " and probability is ");
+			System.out.printf("%4.2f", (sortedSatTickets.get(key)*1.0/totalTicketCountsForSaturday)*100.0);
+			System.out.println("%");
 		}
 		System.out.println("");
 		System.out.println("***********************************");
 		System.out.println("");
 		for (String key : sortedSunTickets.keySet()) {
-			System.out.println(key + " ticket count is " + sortedSunTickets.get(key) + " and probability is " 
-					+ (sortedSunTickets.get(key)*1.0/totalTicketCountsForSunday)*100.0);		
+			System.out.print(key + " ticket count is " + sortedSunTickets.get(key) + " and probability is ");
+			System.out.printf("%4.2f", (sortedSunTickets.get(key)*1.0/totalTicketCountsForSunday)*100.0);
+			System.out.println("%");
 		}
 	}
 	
