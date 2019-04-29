@@ -34,7 +34,6 @@ public class FileHandler {
 				count++;
 				String ParkingTicketInfo = scanner.nextLine();
 				String[] columnData = ParkingTicketInfo.split(",");
-				//System.out.println(flightRowInfo); // for debugging purpose
 
 				ParkingTickets TicketRawData = new ParkingTickets(columnData);
 				try {
