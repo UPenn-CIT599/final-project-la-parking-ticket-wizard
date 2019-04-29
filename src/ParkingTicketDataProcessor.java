@@ -31,10 +31,12 @@ import java.util.Map;
 
 public class ParkingTicketDataProcessor {
 
+	// instance variable
 	private HashMap<Integer, ParkingTickets> parkingTicketsRaw;
-	String[] timeByHour = new String[24];
-	ArrayList<String> sortedKeysByVioDesc;
+	private String[] timeByHour = new String[24];
+	private ArrayList<String> sortedKeysByVioDesc;
 
+	// constructor
 	public ParkingTicketDataProcessor(HashMap<Integer, ParkingTickets> curParkingTicketsData) {
 		this.parkingTicketsRaw = curParkingTicketsData;
 		// System.out.println(this.parkingTicketsRaw.size());
