@@ -414,4 +414,11 @@ public class ParkingTicketDataProcessor {
 	public HashMap<String, Integer> getSortedSunTickets() {
 		return sortedSunTickets;
 	}
+
+	public ArrayList<String> getSortedKeysByVioDesc() {
+		return sortedKeysByVioDesc;
+	}
+	
+	
+	
 }
