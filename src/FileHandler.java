@@ -34,7 +34,7 @@ public class FileHandler {
 				count++;
 				String ParkingTicketInfo = scanner.nextLine();
 				String[] columnData = ParkingTicketInfo.split(",");
-//				System.out.println(flightRowInfo); // for debugging purpose
+				//System.out.println(flightRowInfo); // for debugging purpose
 
 				ParkingTickets TicketRawData = new ParkingTickets(columnData);
 				try {
@@ -75,6 +75,7 @@ public class FileHandler {
 				}
 				pw.print("\n");
 				pw.flush();
+				pw.close(); // added to close pw
 			}
 			System.out.println("Write End: " + clock.instant());
 
