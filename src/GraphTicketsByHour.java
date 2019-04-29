@@ -18,22 +18,27 @@ public class GraphTicketsByHour extends ApplicationFrame {
 		super(title);
 		this.ticketByTime = curTicketByTime;
 		setContentPane(createGraphPanel());
+		//RefineryUtilities.centerFrameOnScreen(createGraphPanel());		
+
+		setVisible(true);
 	}
 	
 	public PieDataset createDataset() {
 		DefaultPieDataset dataset = new DefaultPieDataset();
 		for (String key : this.ticketByTime.keySet()) {
-			dataset.setValue(key, this.ticketByTime.get(key) );
+			if (this.ticketByTime.get(key) >= 100000) {
+				dataset.setValue(key, this.ticketByTime.get(key) );
+			}
 		}
 		return dataset;
 	}
 	
 	public JFreeChart createChart (PieDataset dataset) {
 		JFreeChart chart = ChartFactory.createPieChart(
-				"Ticket by 3 Hour Intervals", 
+				"Ticket by Hour Intervals", 
 				dataset, 
 				true, //legend
-				true, //tooltip
+				true, //tool tip
 				false // use to generate URL
 				);		
 		return chart;		
@@ -41,24 +46,7 @@ public class GraphTicketsByHour extends ApplicationFrame {
 	
 	public JPanel createGraphPanel() {
 		JFreeChart chart = createChart(createDataset());
-		return new ChartPanel( chart );
+		setSize(560, 367);
+		return new ChartPanel(chart);
 	}
-	
-	/* public static void main(String[] args) {		
-		HashMapCreator hmc = new HashMapCreator("parking-citations_small.csv");
-		ParkingTicketDataProcessor ptp = new ParkingTicketDataProcessor(hmc.parkingTicketRaw);
-		HashMap<String, Integer> tcbh = ptp.ticketCountsByHour();
-		ptp.ticketPrint();
-		GraphTicketsByHour gtbh = new GraphTicketsByHour("Ticket Counts by 3 Hour Intervals", tcbh);
-		gtbh.setSize(560, 367);
-		RefineryUtilities.centerFrameOnScreen(gtbh);
-		gtbh.setVisible(true);
-	} */
-	
-	/*public GraphTicketsByHour (HashMap<String, Integer> curTicketByVioDescription) {
-		//super(title);
-		this.ticketByVioDescription = curTicketByVioDescription;
-		setContentPane(createGraphPanel());
-	}*/
-	
 }
