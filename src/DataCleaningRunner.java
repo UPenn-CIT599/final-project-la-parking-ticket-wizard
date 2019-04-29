@@ -10,7 +10,7 @@ import java.time.*;
  */
 public class DataCleaningRunner {
 
-	public static void main(String[] args) {
+	public void runDataCleaner() {
 		Clock clock = Clock.systemUTC();
 		System.out.println("Read Start: " + clock.instant());
 		FileHandler fh = new FileHandler("parking-citations.csv");
@@ -22,6 +22,5 @@ public class DataCleaningRunner {
 		System.out.println("Cleaned Data Size: " + dc.getCleanedDataRaw().size());
 
 		fh.writeToCSVFile(dc.getCleanedDataRaw());
-
 	}
 }
