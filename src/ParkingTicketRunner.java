@@ -20,6 +20,7 @@ public class ParkingTicketRunner {
 		RefineryUtilities.centerFrameOnScreen(pccujfc);		
 		System.out.println("");
 		System.out.println("***********************************");
+		// PieChart for Issued Tickets by Hour
 		HashMap<String, Integer> ticketsByDay = ptdp.ticketsByDay();
 		pccujfc.PieChartForTicketsByDay(ticketsByDay);
 		RefineryUtilities.centerFrameOnScreen(pccujfc);		
@@ -33,11 +34,11 @@ public class ParkingTicketRunner {
 		System.out.println("***********************************");
 		// BarChart for Top 10 Violation Ticket Type Fines
 		HashMap<String, Integer> ticketByFine = ptdp.ticketsByFine();
-		ArrayList<String> sortedKeys = ptdp.sortedKeysByVioDesc;
+		ArrayList<String> sortedKeys = ptdp.getSortedKeysByVioDesc();
 		bccujfc.BarChartForViolationFines(ticketByFine, sortedKeys);
 		System.out.println("");
 		System.out.println("***********************************");		
-		ptdp.ticketsByProbDayTime();
+		ptdp.ticketsProbDistByDayTime();
 		System.out.println("***********************************");
 	}
 }

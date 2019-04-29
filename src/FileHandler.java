@@ -46,9 +46,12 @@ public class FileHandler {
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Please download \"parking-citations.csv\" raw data file first "
+					+ "from the Kaggle website: https://www.kaggle.com/cityofLA/los-angeles-parking-citations");
+//			e.printStackTrace();
 		}
 	}
+	
 
 	/**
 	 * Take parking tickets data in the Hashmap and write them in the new .csv file
