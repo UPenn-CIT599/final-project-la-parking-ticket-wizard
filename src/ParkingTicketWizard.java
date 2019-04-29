@@ -38,7 +38,7 @@ public class ParkingTicketWizard {
 	}
 
 	/**
-	 * 
+	 * The Main method running the Parking Ticket Wizard program.
 	 */
 	public void run() {
 		User user = new User(); // introduce user
@@ -50,20 +50,32 @@ public class ParkingTicketWizard {
 		boolean isRunning = true;
 		while (isRunning) {
 			System.out.println("\nPlease select one of the followings:");
-			System.out.println("1. Overall LA Data Analysis Result");
-			System.out.println("2. Data Analysis Result Around My Area");
-			System.out.println("3. Quit The Program");
+			System.out.println("1. Update data file");
+			System.out.println("2. Overall LA Data Analysis Result");
+			System.out.println("3. Data Analysis Result Around My Area");
+			System.out.println("4. Quit The Program");
 
-			int userOption = user.chooseOption();
+			int userOption = user.chooseOption(4);
 
 			switch (userOption) {
-			case 1:
+			case 1: {
+				System.out.println("Running Data Cleaner...");
+				dcr.runDataCleaner();
+				break;
+			}
+			case 2: {
 				System.out.println("\nOverall LA Data Analysis Result");
-			case 2:
+				break;
+			}
+			case 3: {
 				System.out.println("\nData Analysis Result Around My Area");
-			case 3:
+				break;
+			}
+			case 4: {
 				System.out.println("\nClosing the program...");
-				System.exit(0);
+				isRunning = false;
+				break;
+			}
 			}
 
 		}
