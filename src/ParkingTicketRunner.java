@@ -1,5 +1,4 @@
 import java.util.*;
-
 import org.jfree.ui.RefineryUtilities;
 
 public class ParkingTicketRunner {
@@ -7,41 +6,38 @@ public class ParkingTicketRunner {
 
 		//FileHandler fh = new FileHandler("parking-citations_extrasmall.csv");		
 		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
-
 		HashMap<Integer, ParkingTickets> hashMapPrakingTicketsRaw = fh.getParkingTicketsRaw();
+		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(hashMapPrakingTicketsRaw);
 		
 		System.out.println("Days that ticket issues are collected");
 		System.out.println(hashMapPrakingTicketsRaw.size());
 		System.out.println("");
-		
-		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(hashMapPrakingTicketsRaw);
-
 		System.out.println("***********************************");
+		// PieChart for Issued Tickets by Hour
 		HashMap<String, Integer> ticketsByTime = ptdp.ticketCountsByHour();
-		GraphTicketsByHour gtbh = new GraphTicketsByHour("Tickets By Hour", ticketsByTime);
-		gtbh.setSize(560, 367);
-		RefineryUtilities.centerFrameOnScreen(gtbh);
-		gtbh.setVisible(true);
-		
-		//ptdp.ticketCountsByHour();
+		PieChartCreatorUsingJFreeChart pccujfc = new PieChartCreatorUsingJFreeChart("PieChart for Parking Tickets");
+		pccujfc.PieChartForTicketsByHour(ticketsByTime);
+		RefineryUtilities.centerFrameOnScreen(pccujfc);		
 		System.out.println("");
-
-		//ParkingTicketByViolationDescription ptbv = new ParkingTicketByViolationDescription(hmc.parkingTicketRaw);
 		System.out.println("***********************************");
+		HashMap<String, Integer> ticketsByDay = ptdp.ticketsByDay();
+		pccujfc.PieChartForTicketsByDay(ticketsByDay);
+		RefineryUtilities.centerFrameOnScreen(pccujfc);		
+		System.out.println("");
+		System.out.println("***********************************");		
+		// BarChart for Top 10 Violation Ticket Type Descriptions
+		BarChartCreatorUsingJFreeChart bccujfc = new BarChartCreatorUsingJFreeChart();
 		HashMap<String, Integer> ticketByVioDes = ptdp.ticketCountsByViolation();
-		BarChartForViolationDescription bcfvd = new BarChartForViolationDescription(ticketByVioDes);
-		bcfvd.setVisible(true);
-		
-		
+		bccujfc.BarChartForViolationDescription(ticketByVioDes);
 		System.out.println("");
 		System.out.println("***********************************");
-		ptdp.ticketsByFine();
+		// BarChart for Top 10 Violation Ticket Type Fines
+		HashMap<String, Integer> ticketByFine = ptdp.ticketsByFine();
+		ArrayList<String> sortedKeys = ptdp.sortedKeysByVioDesc;
+		bccujfc.BarChartForViolationFines(ticketByFine, sortedKeys);
 		System.out.println("");
-		System.out.println("***********************************");
-		ptdp.ticketsByDay();
-		System.out.println("***********************************");
+		System.out.println("***********************************");		
 		ptdp.ticketsByProbDayTime();
-		//ptdp.printingDayTimeTickets();
 		System.out.println("***********************************");
 	}
 }
