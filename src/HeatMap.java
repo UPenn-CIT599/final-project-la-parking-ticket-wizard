@@ -173,16 +173,16 @@ public class HeatMap {
 	
 	
 	
-	public static void main(String[] args) {
-		HeatMap theHeatMap = new HeatMap();
+//	public static void main(String[] args) {
+//		HeatMap theHeatMap = new HeatMap();
 //		System.out.println(theHeatMap.GridGenerator().get(3000)[1].getLatitude());
 //	System.out.println(theHeatMap.GridGenerator().size());
 //		FileHandler file = new FileHandler("parking-citations_cleaned.csv");
 //		HashMap<Integer, ParkingTickets> data = file.getParkingTicketsRaw();
 //		System.out.println("Raw Data Size is " + data.size());
-		theHeatMap.readHeatMap();
-		HashMap<Integer, Integer> heatMap = theHeatMap.getHeatMap();
-		System.out.println("HeatMap Blocks Count: " + theHeatMap.heatMap.size());
+//		theHeatMap.readHeatMap();
+//		HashMap<Integer, Integer> heatMap = theHeatMap.getHeatMap();
+//		System.out.println("HeatMap Blocks Count: " + theHeatMap.heatMap.size());
 //		int totalTickets = 0;
 //		int zeroCounter = 0;
 //		for (int i = 0; i < heatMap.size(); i++) {
@@ -194,6 +194,6 @@ public class HeatMap {
 //		}
 //		System.out.println("HeatMap Total Tickets:  " + totalTickets);
 //		System.out.println("HeatMap Empty Blocks Count: " + zeroCounter);
-}
+//}
 
 }
