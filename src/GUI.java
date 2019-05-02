@@ -1,4 +1,6 @@
 
+import java.util.*;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -12,8 +14,8 @@ import javafx.stage.Stage;
 
 
 public class GUI extends Application {
-	private double X, Y;
-	private int DAY, HOUR;
+	private static double X, Y;
+	private static int DAY, HOUR;
 	Stage window;
 	String message;
 
@@ -153,8 +155,33 @@ public class GUI extends Application {
 	private static String Predict() {
 		// TO-DO
 		String predictionMsg = "No Data Available!";
+		Location userLocation = new Location(X,Y);
+		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
+		HashMap<Integer, ParkingTickets> allTickets = fh.getParkingTicketsRaw();
+		LikelyhoodPredictor lp = new LikelyhoodPredictor();
+		
+		
+		HashMap<Integer, ParkingTickets> ticketsInLocation = userLocation.locationFilter(allTickets, 100, userLocation);
 
+		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(ticketsInLocation);
+		
+		HashMap<String, HashMap<Integer, Integer>> ticketCountsAllDayHourly = ptdp.ticketsCountsByDayTime();
+		HashMap<Integer, Integer> ticketCountsDayHourly = ticketCountsAllDayHourly.get(dayConverter(DAY));
+		
+		predictionMsg = lp.predict(HOUR, ticketCountsDayHourly);
+		
 		return predictionMsg;
+	}
+	
+	private static String dayConverter (int dayNumber) {
+		if (dayNumber == 1) return "Monday";
+		else if (dayNumber == 2) return "Tuesday";
+		else if (dayNumber == 3) return "Wednesday";
+		else if (dayNumber == 4) return "Thursday";
+		else if (dayNumber == 5) return "Friday";
+		else if (dayNumber == 6) return "Saturday";
+		else if (dayNumber == 7) return "Sunday";
+		else return "";
 	}
 
 }

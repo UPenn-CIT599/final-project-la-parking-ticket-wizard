@@ -22,16 +22,16 @@ public class LikelyhoodPredictor {
 	 * @param curTicketByTime
 	 * @return message prompt + likelyhood percentile
 	 */
-	public String predict(String currentTime, HashMap<String, Integer> curTicketByTime) {
+	public String predict(int currentTimeHour, HashMap<Integer, Integer> curTicketByTime) {
 		int totalTickets = 0;
 		int zeroCounter = 0;
-		for (String key : curTicketByTime.keySet()) {
-			if (curTicketByTime.get(key) == 0) {
+		for (Integer timeHour : curTicketByTime.keySet()) {
+			if (curTicketByTime.get(timeHour) == 0) {
 				zeroCounter++;
 			}
-			totalTickets += curTicketByTime.get(key);
+			totalTickets += curTicketByTime.get(timeHour);
 		}
-		int currentHourTickets = curTicketByTime.get(currentTime);
+		int currentHourTickets = curTicketByTime.get(currentTimeHour);
 		if (currentHourTickets == 0) {
 			 return "NOT LIKELY";
 		//	return "No historical ticket issued at this hour, park with your best judgement!";
