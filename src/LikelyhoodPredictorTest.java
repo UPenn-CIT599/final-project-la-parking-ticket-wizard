@@ -9,14 +9,14 @@ class LikelyhoodPredictorTest {
 	@Test
 	void testPredict() {
 		LikelyhoodPredictor predictor =new LikelyhoodPredictor();
-		HashMap<String, Integer> history= new HashMap<String, Integer>();
+		HashMap<Integer, Integer> history= new HashMap<Integer, Integer>();
 		for (int i=1; i<=24;i++) {
-			history.put(String.valueOf(i), i);
+			history.put(i, i);
 		}
-		history.put(String.valueOf(8),0);
-		assertEquals(predictor.predict(String.valueOf(3), history), "LIKELY");		
-		assertEquals(predictor.predict(String.valueOf(24), history), "VERY LIKELY");
-		assertEquals(predictor.predict(String.valueOf(8), history), "NOT LIKELY");
+		history.put(8,0);
+		assertEquals(predictor.predict(3, history), "You are at lower than average likelyhood to get ticketed, park with caution!");		
+		assertEquals(predictor.predict(24, history), "You are at higher than average likelyhood to get ticketed, park with extreme caution!");
+		assertEquals(predictor.predict(8, history), "No historical ticket issued at this hour, park with your best judgement!");
 				//fail("Not yet implemented");
 	}
 

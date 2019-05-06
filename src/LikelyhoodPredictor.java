@@ -33,19 +33,17 @@ public class LikelyhoodPredictor {
 		}
 		int currentHourTickets = curTicketByTime.get(currentTimeHour);
 		if (currentHourTickets == 0) {
-		//	 return "NOT LIKELY";
-		//	return "No historical ticket issued at this hour, park with your best judgement!";
+	
+         return "No historical ticket issued at this hour, park with your best judgement!";
 		}
 		int averageTicket = totalTickets / (24 - zeroCounter);
 		double percentile = currentHourTickets * 100 / totalTickets;
 		if (currentHourTickets >= averageTicket) {
-		//	return "VERY LIKELY";
-			return "You are at higher than average likelyhood to get ticketed, your likelyhood percentile is at "
-					+ String.valueOf(percentile) + " park with extreme caution!";
+
+			return "You are at higher than average likelyhood to get ticketed, park with extreme caution!";
 		} else {
-	    //    return "LIKELY";
-			return "You are at lower than average likelyhood to get ticketed, your likelyhood percentile is at "
-					+ String.valueOf(percentile) + " park with caution!";
+
+			return "You are at lower than average likelyhood to get ticketed, park with caution!";
 		}
 
 	}

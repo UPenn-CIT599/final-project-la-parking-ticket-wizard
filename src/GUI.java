@@ -39,7 +39,7 @@ public class GUI extends Application {
 		BigDataPane.setVgap(8);
 		BigDataPane.setHgap(10);
 
-		Scene scene = new Scene(grid, 350, 300);
+		Scene scene = new Scene(grid, 450, 300);
 		Scene bigDataScene = new Scene(BigDataPane, 820, 1000);
 
 		Label xLabel = new Label("X Coordinate Value:");
@@ -59,20 +59,26 @@ public class GUI extends Application {
 		Label dayLabel = new Label("Day of Week:");
 		GridPane.setConstraints(dayLabel, 0, 2);
 
-		TextField day = new TextField("5");
+		Label dayLabelIntro = new Label("Eg: Tuesday enter 2 ");
+		GridPane.setConstraints(dayLabelIntro, 2, 2);
+		
+		TextField day = new TextField("2");
 //		day.setPromptText("5");
 		GridPane.setConstraints(day, 1, 2);
 
 		Label hourLabel = new Label("Hour of Day:");
 		GridPane.setConstraints(hourLabel, 0, 3);
+		
+		Label hourLabelIntro = new Label("Eg: 1:00PM enter 13");
+		GridPane.setConstraints(hourLabelIntro, 2, 3);
 
-		TextField hour = new TextField("9");
+		TextField hour = new TextField("13");
 //		hour.setPromptText("14");
 		GridPane.setConstraints(hour, 1, 3);
 		
-		Button IniButton = new Button("Initialize System");
-		GridPane.setConstraints(IniButton, 0, 5);
-		IniButton.setOnAction(e->{initializeSystem();});
+//		Button IniButton = new Button("Initialize System");
+//		GridPane.setConstraints(IniButton, 0, 5);
+//		IniButton.setOnAction(e->{initializeSystem();});
 
 		Button predictButton = new Button("Predict Tickets");
 		GridPane.setConstraints(predictButton, 1, 5);
@@ -150,7 +156,7 @@ public class GUI extends Application {
 		BigDataPane.getChildren().addAll(backToPrediction, imv, BarCharVioDesc, BarCharVioFee, PieVioDay, PieVioHour);
 
 		grid.getChildren().addAll(xLabel, xInput, yLabel, yInput, dayLabel, day, hourLabel, hour, predictButton,
-				BigDataButton, IniButton);
+				BigDataButton,dayLabelIntro , hourLabelIntro);
 
 		window.setScene(scene);
 		window.show();
@@ -187,8 +193,8 @@ public class GUI extends Application {
 		else if (dayNumber == 7) return "Sunday";
 		else return "";
 	}
-   private static void initializeSystem() {
-	   
-	   
-   }
+//   private static void initializeSystem() {
+//	   
+//	   
+//   }
 }
