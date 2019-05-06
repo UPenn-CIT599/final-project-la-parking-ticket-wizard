@@ -45,30 +45,34 @@ public class GUI extends Application {
 		Label xLabel = new Label("X Coordinate Value:");
 		GridPane.setConstraints(xLabel, 0, 0);
 
-		TextField xInput = new TextField();
-		xInput.setPromptText("123456.78");
+		TextField xInput = new TextField("6482261.8");
+//		xInput.setPromptText("123456.78");
 		GridPane.setConstraints(xInput, 1, 0);
 
 		Label yLabel = new Label("Y Coordinate Value:");
 		GridPane.setConstraints(yLabel, 0, 1);
 
-		TextField yInput = new TextField();
-		yInput.setPromptText("123456.78");
+		TextField yInput = new TextField("1837556.1");
+//		yInput.setPromptText("123456.78");
 		GridPane.setConstraints(yInput, 1, 1);
 
 		Label dayLabel = new Label("Day of Week:");
 		GridPane.setConstraints(dayLabel, 0, 2);
 
-		TextField day = new TextField();
-		day.setPromptText("5");
+		TextField day = new TextField("5");
+//		day.setPromptText("5");
 		GridPane.setConstraints(day, 1, 2);
 
 		Label hourLabel = new Label("Hour of Day:");
 		GridPane.setConstraints(hourLabel, 0, 3);
 
-		TextField hour = new TextField();
-		hour.setPromptText("14");
+		TextField hour = new TextField("9");
+//		hour.setPromptText("14");
 		GridPane.setConstraints(hour, 1, 3);
+		
+		Button IniButton = new Button("Initialize System");
+		GridPane.setConstraints(IniButton, 0, 5);
+		IniButton.setOnAction(e->{initializeSystem();});
 
 		Button predictButton = new Button("Predict Tickets");
 		GridPane.setConstraints(predictButton, 1, 5);
@@ -118,7 +122,7 @@ public class GUI extends Application {
 		// Add everything to grid
 		Button BigDataButton = new Button("Big Data View");
 
-		GridPane.setConstraints(BigDataButton, 1, 7);
+		GridPane.setConstraints(BigDataButton, 1, 6);
 		BigDataButton.setOnAction(e -> window.setScene(bigDataScene));
 
 		Button backToPrediction = new Button("Back To Prediction View");
@@ -146,7 +150,7 @@ public class GUI extends Application {
 		BigDataPane.getChildren().addAll(backToPrediction, imv, BarCharVioDesc, BarCharVioFee, PieVioDay, PieVioHour);
 
 		grid.getChildren().addAll(xLabel, xInput, yLabel, yInput, dayLabel, day, hourLabel, hour, predictButton,
-				BigDataButton);
+				BigDataButton, IniButton);
 
 		window.setScene(scene);
 		window.show();
@@ -183,5 +187,8 @@ public class GUI extends Application {
 		else if (dayNumber == 7) return "Sunday";
 		else return "";
 	}
-
+   private static void initializeSystem() {
+	   
+	   
+   }
 }
