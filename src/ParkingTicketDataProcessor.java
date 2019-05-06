@@ -1,6 +1,7 @@
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.math.RoundingMode;
 
 /**
  * Data Processor class contains methods for analyzing violation data. From this
@@ -36,6 +38,8 @@ public class ParkingTicketDataProcessor {
 	private String[] timeByHour = new String[24];
 	private ArrayList<String> sortedKeysByVioDesc;
 
+	private DecimalFormat df = new DecimalFormat("#.##");
+	
 	// constructor
 	public ParkingTicketDataProcessor(HashMap<Integer, ParkingTickets> curParkingTicketsData) {
 		this.parkingTicketsRaw = curParkingTicketsData;
@@ -329,7 +333,8 @@ public class ParkingTicketDataProcessor {
 			HashMap<Integer, Double> todayProbDist = ticketDayHourlyProbDist.get(today);
 			System.out.println(today + " Hourly Ticket Probability Distribution");
 			for (Integer hourTime : todayProbDist.keySet()) {
-				System.out.println(hourTime + ":00 - " + (hourTime + 1) + ":00 " + todayProbDist.get(hourTime) + " %");
+				double currentPcnt = todayProbDist.get(hourTime);
+				System.out.println(hourTime + ":00 - " + (hourTime + 1) + ":00 " + df.format(currentPcnt) + " %");
 			}
 		}
 
