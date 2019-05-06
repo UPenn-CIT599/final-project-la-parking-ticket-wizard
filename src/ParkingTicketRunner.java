@@ -1,6 +1,13 @@
 import java.util.*;
 import org.jfree.ui.RefineryUtilities;
 
+/**
+ * Parking Ticket Data Analysis Runner Class. Runs various data analysis and 
+ * calls for JFree Chart Pie and Bar Chart creation classes for each analysis.
+ * 
+ * @author lukeshin
+ *
+ */
 public class ParkingTicketRunner {
 	public static void main(String[] args) {
 
