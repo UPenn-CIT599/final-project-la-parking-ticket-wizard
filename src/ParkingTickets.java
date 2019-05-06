@@ -190,7 +190,7 @@ public class ParkingTickets {
 		return longitude;
 	}
 
-	@Override
+	@Override // Added toString method for printing ticket info : Luke
 	public String toString() {
 		return "Parking Ticket Info : " + issueDate + ", " + issueTime + ", " + rpState + ", " + rpExpire + ", " + maker
 				+ ", " + bodyStyle + ", " + color + ", " + violationCode + ", " + violationDescription + ", " + fine
