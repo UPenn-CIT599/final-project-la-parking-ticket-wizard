@@ -1,10 +1,15 @@
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -39,49 +44,49 @@ public class GUI extends Application {
 		BigDataPane.setVgap(8);
 		BigDataPane.setHgap(10);
 
-		Scene scene = new Scene(grid, 450, 300);
+		Scene scene = new Scene(grid, 550, 300);
 		Scene bigDataScene = new Scene(BigDataPane, 820, 1000);
 
 		Label xLabel = new Label("X Coordinate Value:");
-		GridPane.setConstraints(xLabel, 0, 0);
+		GridPane.setConstraints(xLabel, 0, 1);
 
 		TextField xInput = new TextField("6482261.8");
 //		xInput.setPromptText("123456.78");
-		GridPane.setConstraints(xInput, 1, 0);
+		GridPane.setConstraints(xInput, 1, 1);
 
 		Label yLabel = new Label("Y Coordinate Value:");
-		GridPane.setConstraints(yLabel, 0, 1);
+		GridPane.setConstraints(yLabel, 0, 2);
 
 		TextField yInput = new TextField("1837556.1");
 //		yInput.setPromptText("123456.78");
-		GridPane.setConstraints(yInput, 1, 1);
+		GridPane.setConstraints(yInput, 1, 2);
 
 		Label dayLabel = new Label("Day of Week:");
-		GridPane.setConstraints(dayLabel, 0, 2);
+		GridPane.setConstraints(dayLabel, 0, 3);
 
 		Label dayLabelIntro = new Label("Eg: Tuesday enter 2 ");
-		GridPane.setConstraints(dayLabelIntro, 2, 2);
+		GridPane.setConstraints(dayLabelIntro, 2, 3);
 		
 		TextField day = new TextField("2");
 //		day.setPromptText("5");
-		GridPane.setConstraints(day, 1, 2);
+		GridPane.setConstraints(day, 1, 3);
 
 		Label hourLabel = new Label("Hour of Day:");
-		GridPane.setConstraints(hourLabel, 0, 3);
+		GridPane.setConstraints(hourLabel, 0, 4);
 		
 		Label hourLabelIntro = new Label("Eg: 1:00PM enter 13");
-		GridPane.setConstraints(hourLabelIntro, 2, 3);
+		GridPane.setConstraints(hourLabelIntro, 2, 4);
 
 		TextField hour = new TextField("13");
 //		hour.setPromptText("14");
-		GridPane.setConstraints(hour, 1, 3);
+		GridPane.setConstraints(hour, 1, 4);
 		
 //		Button IniButton = new Button("Initialize System");
 //		GridPane.setConstraints(IniButton, 0, 5);
 //		IniButton.setOnAction(e->{initializeSystem();});
 
 		Button predictButton = new Button("Predict Tickets");
-		GridPane.setConstraints(predictButton, 1, 5);
+		GridPane.setConstraints(predictButton, 1, 6);
 		predictButton.setOnAction(e -> {
 			boolean inputValid = false;
 			try {
@@ -128,7 +133,7 @@ public class GUI extends Application {
 		// Add everything to grid
 		Button BigDataButton = new Button("Big Data View");
 
-		GridPane.setConstraints(BigDataButton, 1, 6);
+		GridPane.setConstraints(BigDataButton, 1, 7);
 		BigDataButton.setOnAction(e -> window.setScene(bigDataScene));
 
 		Button backToPrediction = new Button("Back To Prediction View");
@@ -150,13 +155,30 @@ public class GUI extends Application {
 		Button PieVioHour = new Button("Hourly Distribution");
 		GridPane.setConstraints(PieVioHour, 0, 5);
 		PieVioHour.setOnAction(e -> imv.setImage(image4));
+		
+		Hyperlink myHyperlink = new Hyperlink();
+		myHyperlink.setText("Click for Coordinates from Map!");
+	
+
+		myHyperlink.setOnAction(e -> {
+		    if(Desktop.isDesktopSupported())
+		    {
+		        try {
+		            Desktop.getDesktop().browse(new URI("https://epsg.io/map#srs=102645&x&y&z=14&layer=streets"));
+		        } catch (IOException e1) {
+		            e1.printStackTrace();
+		        } catch (URISyntaxException e1) {
+		            e1.printStackTrace();
+		        }
+		    }
+		});
 
 		GridPane.setConstraints(imv, 0, 1);
 
 		BigDataPane.getChildren().addAll(backToPrediction, imv, BarCharVioDesc, BarCharVioFee, PieVioDay, PieVioHour);
 
 		grid.getChildren().addAll(xLabel, xInput, yLabel, yInput, dayLabel, day, hourLabel, hour, predictButton,
-				BigDataButton,dayLabelIntro , hourLabelIntro);
+				BigDataButton,dayLabelIntro , hourLabelIntro,myHyperlink);
 
 		window.setScene(scene);
 		window.show();
