@@ -2,18 +2,20 @@ import java.io.*;
 
 /***
  * 
- * The main class of the software that describes the workflow of the software
+ * The main class of the program that runs overall back-end part (data cleaning,
+ * data analysis, data visualization)
  * 
- * @author ChanWoo
+ * @author Chan Woo Yang
  *
  */
 
 public class ParkingTicketWizard {
 
 	// instance variable
-	private File rawDataFile = new File("parking-citations.csv");
-	private File cleanedDataFile = new File("parking-citations_cleaned.csv");
+	private final static File rawDataFile = new File("parking-citations.csv");
+	private final static File cleanedDataFile = new File("parking-citations_cleaned.csv");
 	DataCleaningRunner dcr = new DataCleaningRunner();
+	ParkingTicketRunner ptr = new ParkingTicketRunner();
 
 	/**
 	 * Check if raw csv file and cleaned csv file are ready in the path. If not,
@@ -34,55 +36,26 @@ public class ParkingTicketWizard {
 			System.out.println("Cleaned data file exists.");
 		}
 
+	}
+
+	/**
+	 * The Main method running the data cleaner and data analysis/visualization.
+	 */
+	public void run() {
+
+		System.out.println("\nPreparing files for the Parking Ticket Wizard...\n");
+
+		initializeSWEnv(); // initialize the environment (make csv files ready)
+
+		ptr.run(); // run parking ticket runner; run data analysis and generate charts and graphs
+
 		System.out.println("\nThe environment for the Parking Ticket Wizard is now ready");
 	}
 
 	/**
-	 * The Main method running the Parking Ticket Wizard program.
+	 * main class running the Parking Ticket Wizard
+	 * @param args
 	 */
-	public void run() {
-		User user = new User(); // introduce user
-
-		System.out.println("\nWelcome to the Parking Ticket Wizard!\n");
-
-		initializeSWEnv(); // initialize the environment (make csv files ready)
-
-		boolean isRunning = true;
-		while (isRunning) {
-			System.out.println("\nPlease select one of the followings:");
-			System.out.println("1. Update data file");
-			System.out.println("2. Overall LA Data Analysis Result");
-			System.out.println("3. Data Analysis Result Around My Area");
-			System.out.println("4. Quit The Program");
-
-			int userOption = user.chooseOption(4);
-
-			switch (userOption) {
-			case 1: {
-				System.out.println("Running Data Cleaner...");
-				dcr.runDataCleaner();
-				break;
-			}
-			case 2: {
-				System.out.println("\nOverall LA Data Analysis Result");
-				break;
-			}
-			case 3: {
-				System.out.println("\nData Analysis Result Around My Area");
-				break;
-			}
-			case 4: {
-				System.out.println("\nClosing the program...");
-				isRunning = false;
-				break;
-			}
-			}
-
-		}
-
-		System.out.println("printed");
-	}
-
 	public static void main(String[] args) {
 		ParkingTicketWizard ptw = new ParkingTicketWizard();
 		ptw.run();

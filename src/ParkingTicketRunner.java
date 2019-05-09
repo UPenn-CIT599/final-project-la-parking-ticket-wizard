@@ -5,13 +5,12 @@ import org.jfree.ui.RefineryUtilities;
  * Parking Ticket Data Analysis Runner Class. Runs various data analysis and 
  * calls for JFree Chart Pie and Bar Chart creation classes for each analysis.
  * 
- * @author lukeshin
+ * @author lukeshin, Chan Woo Yang
  *
  */
 public class ParkingTicketRunner {
-	public static void main(String[] args) {
+	public void run() {
 
-		//FileHandler fh = new FileHandler("parking-citations_extrasmall.csv");		
 		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
 		HashMap<Integer, ParkingTickets> hashMapPrakingTicketsRaw = fh.getParkingTicketsRaw();
 		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(hashMapPrakingTicketsRaw);
