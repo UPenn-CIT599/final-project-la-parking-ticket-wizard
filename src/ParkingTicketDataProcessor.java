@@ -17,15 +17,12 @@ import java.math.RoundingMode;
  * analysis, we will collect the data trend of i. Rank day of the week by number
  * of issued tickets. Calculate probability of issued tickets for each day. ii.
  * Rank time of the day by number of issued tickets. Calculate probability of
- * issued tickets for each hour. iii. Rank area (zone) of LA by number of issued
- * tickets. Calculate probability of issued tickets for each zone.
+ * issued tickets for each hour.
  * 
- * We will combine all three parameters and rank them by order of issued
- * tickets. Then, compare user's input of address, day and time of parking
- * information and predict likelihood of getting tickets if he/she commits
- * parking violation.
+ * We will use these data and rank them by order of issued tickets. Then,
+ * compare user's input of address, day and time of parking information and
+ * predict likelihood of getting tickets if he/she commits parking violation.
  *
- * We can add analysis of type of violations as well.
  * 
  * @author lukeshin, Chan Woo Yang
  *
@@ -39,7 +36,7 @@ public class ParkingTicketDataProcessor {
 	private ArrayList<String> sortedKeysByVioDesc;
 
 	private DecimalFormat df = new DecimalFormat("#.##");
-	
+
 	// constructor
 	public ParkingTicketDataProcessor(HashMap<Integer, ParkingTickets> curParkingTicketsData) {
 		this.parkingTicketsRaw = curParkingTicketsData;
@@ -147,9 +144,9 @@ public class ParkingTicketDataProcessor {
 		}
 
 		/*
-		 * Finding Top 10 most expensive ticket fines. Map<String, Integer> unSortedMap
-		 * = ticketByFine; LinkedHashMap<String, Integer> decendingSortedTBF = new
-		 * LinkedHashMap<>();
+		 * Finding Top 10 most expensive ticket fines. This is not used for the final
+		 * version. Map<String, Integer> unSortedMap = ticketByFine;
+		 * LinkedHashMap<String, Integer> decendingSortedTBF = new LinkedHashMap<>();
 		 * unSortedMap.entrySet().stream().sorted(Map.Entry.comparingByValue(Comparator.
 		 * reverseOrder())) .forEachOrdered(x -> decendingSortedTBF.put(x.getKey(),
 		 * x.getValue()));
@@ -186,7 +183,6 @@ public class ParkingTicketDataProcessor {
 			DateFormat format2 = new SimpleDateFormat("EEEE");
 			ticketDay = format2.format(dt1);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return ticketDay;
@@ -240,8 +236,8 @@ public class ParkingTicketDataProcessor {
 	}
 
 	/**
-	 * 
-	 * @return
+	 * Method to provide hourly violation ticket counts per each day.
+	 * @return nested HashMap of ticket counts by hour per each day.
 	 */
 	public HashMap<String, HashMap<Integer, Integer>> ticketsCountsByDayTime() {
 
@@ -284,7 +280,7 @@ public class ParkingTicketDataProcessor {
 			ticketByDayTime.put(currentTicketDay, currentDayHourlyTimeHashMap);
 		}
 
-//		System.out.println(ticketByDayTime);
+		// System.out.println(ticketByDayTime);
 
 		// print each day hourly ticket count distribution
 		for (String today : ticketByDayTime.keySet()) {
@@ -299,10 +295,10 @@ public class ParkingTicketDataProcessor {
 	}
 
 	/**
-	 * 
+	 * Method to provide probability of issued tickets by hour per each day.
 	 * @param day
 	 * @param ticketByDayTime
-	 * @return
+	 * @return nested HashMap of probability of tickets by hour per each day.
 	 */
 	public HashMap<String, HashMap<Integer, Double>> ticketsProbDistByDayTime() {
 		HashMap<String, HashMap<Integer, Double>> ticketDayHourlyProbDist = new HashMap<String, HashMap<Integer, Double>>();
@@ -317,17 +313,17 @@ public class ParkingTicketDataProcessor {
 			for (Integer hourTime : todayCountDist.keySet()) {
 				totalDayTicketCount += todayCountDist.get(hourTime);
 			}
-			
+
 			// Compute hourly ticket distribution in percent
 			HashMap<Integer, Double> ticketHourlyProbDist = new HashMap<Integer, Double>();
 			for (Integer hourTime : todayCountDist.keySet()) {
 				double ticketDistPcnt = (todayCountDist.get(hourTime) / totalDayTicketCount) * 100.0;
 				ticketHourlyProbDist.put(hourTime, ticketDistPcnt);
 			}
-			
+
 			ticketDayHourlyProbDist.put(today, ticketHourlyProbDist);
 		}
-		
+
 		// print each day hourly ticket probability distribution
 		for (String today : ticketDayHourlyProbDist.keySet()) {
 			HashMap<Integer, Double> todayProbDist = ticketDayHourlyProbDist.get(today);
@@ -344,7 +340,4 @@ public class ParkingTicketDataProcessor {
 	public ArrayList<String> getSortedKeysByVioDesc() {
 		return sortedKeysByVioDesc;
 	}
-	
-	
-	
 }
