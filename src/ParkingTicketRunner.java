@@ -1,50 +1,116 @@
 import java.util.*;
-import org.jfree.ui.RefineryUtilities;
+import java.util.concurrent.TimeUnit;
+
+//import org.jfree.ui.RefineryUtilities;
 
 /**
- * Parking Ticket Data Analysis Runner Class. Runs various data analysis and 
+ * Parking Ticket Data Analysis Runner Class. Runs various data analysis and
  * calls for JFree Chart Pie and Bar Chart creation classes for each analysis.
  * 
  * @author lukeshin, Chan Woo Yang
  *
  */
 public class ParkingTicketRunner {
+
 	public void run() {
 
 		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
 		HashMap<Integer, ParkingTickets> hashMapPrakingTicketsRaw = fh.getParkingTicketsRaw();
 		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(hashMapPrakingTicketsRaw);
 		
-		System.out.println("Days that ticket issues are collected");
+		System.out.println("***************************************************");
+		System.out.println("Total ticket counts processed for Big-Data Analysis");
 		System.out.println(hashMapPrakingTicketsRaw.size());
+		System.out.println("***************************************************");
+		System.out.println("");
+		System.out.println("************************************");
+		System.out.println("Parking Tickect Distribution by Hour");
+		ptdp.ticketCountsByHour();
+		System.out.println("************************************");
+		System.out.println("");
 		System.out.println("");
 		System.out.println("***********************************");
-		// PieChart for Issued Tickets by Hour
-		HashMap<String, Integer> ticketsByTime = ptdp.ticketCountsByHour();
-		PieChartCreatorUsingJFreeChart pccujfc = new PieChartCreatorUsingJFreeChart("PieChart for Parking Tickets");
-		pccujfc.PieChartForTicketsByHour(ticketsByTime);
-		RefineryUtilities.centerFrameOnScreen(pccujfc);		
-		System.out.println("");
-		System.out.println("***********************************");
-		// PieChart for Issued Tickets by Hour
+		System.out.println("Parking Tickect Distribution by Day");
 		HashMap<String, Integer> ticketsByDay = ptdp.ticketsByDay();
-		pccujfc.PieChartForTicketsByDay(ticketsByDay);
-		RefineryUtilities.centerFrameOnScreen(pccujfc);		
-		System.out.println("");
-		System.out.println("***********************************");		
-		// BarChart for Top 10 Violation Ticket Type Descriptions
-		BarChartCreatorUsingJFreeChart bccujfc = new BarChartCreatorUsingJFreeChart();
-		HashMap<String, Integer> ticketByVioDes = ptdp.ticketCountsByViolation();
-		bccujfc.BarChartForViolationDescription(ticketByVioDes);
-		System.out.println("");
 		System.out.println("***********************************");
-		// BarChart for Top 10 Violation Ticket Type Fines
+		System.out.println("");
+		System.out.println("");
+		System.out.println("*************************************");
+		System.out.println("Top 10 Most Issued Ticket Description");
+		HashMap<String, Integer> ticketByVioDes = ptdp.ticketCountsByViolation();
+		System.out.println("*************************************");
+		System.out.println("");
+		System.out.println("");
+		System.out.println("******************************************");
+		System.out.println("Top 10 Most Issued Ticket Fine Information");
 		HashMap<String, Integer> ticketByFine = ptdp.ticketsByFine();
 		ArrayList<String> sortedKeys = ptdp.getSortedKeysByVioDesc();
-		bccujfc.BarChartForViolationFines(ticketByFine, sortedKeys);
+		System.out.println("******************************************");
 		System.out.println("");
-		System.out.println("***********************************");		
-		ptdp.ticketsProbDistByDayTime();
-		System.out.println("***********************************");
+		System.out.println("************************************************************************************************************");
+		System.out.println("Printing Charts for Ticket Information, this will take ~15mins to avoid JFreeChart's random throws exception.");
+		System.out.println("************************************************************************************************************");
+		// BarChart Creation Steps
+		// Add delay to avoid any ConcurrentModificationException
+		BarChartCreatorUsingJFreeChart bccujfc = new BarChartCreatorUsingJFreeChart();
+		try {
+			TimeUnit.MINUTES.sleep(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// BarChart for Top 10 Violation Ticket Type Descriptions
+		bccujfc.BarChartForViolationDescription(ticketByVioDes);
+		// Add delay to avoid any ConcurrentModificationException
+		try {
+			TimeUnit.MINUTES.sleep(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// BarChart for Top 10 Violation Ticket Type Fines
+		bccujfc.BarChartForViolationFines(ticketByFine, sortedKeys);
+		// PieChart Creation Steps
+		// Add delay to avoid any ConcurrentModificationException
+		try {
+			TimeUnit.MINUTES.sleep(2);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// PieChart for Issued Tickets by Hour
+		PieChartForTicketsByHourUsingJFreeChart pcftbhujfc = new PieChartForTicketsByHourUsingJFreeChart("PieChart for Parking Tickets",
+				hashMapPrakingTicketsRaw);
+		// Add delay to avoid any ConcurrentModificationException
+		try {
+			TimeUnit.MINUTES.sleep(3);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		try {
+			pcftbhujfc.PieChartForTicketsByHour();
+		} catch (java.util.ConcurrentModificationException e) {
+			System.out.println(
+					"JFreeChart randomly throws ConcurrentModificationException depending how CPU schedules threads to process many collections we use. However, it still generates proper charts and do not cause any issues.");
+			// e.printStackTrace();
+		}
+		// Add delay to avoid any ConcurrentModificationException
+		try {
+			TimeUnit.MINUTES.sleep(3);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		PieChartForTicketsByDayUsingJFreeChart pccujfc = new PieChartForTicketsByDayUsingJFreeChart(
+				"PieChart for Parking Tickets", ticketsByDay);
+		try {
+			TimeUnit.MINUTES.sleep(3);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		// PieChart for Issued Tickets by Day
+		try {
+			pccujfc.PieChartForTicketsByDay();
+		} catch (java.util.ConcurrentModificationException e) {
+			System.out.println(
+					"JFreeChart randomly throws ConcurrentModificationException depending how CPU schedules threads to process many collections we use. However, it still generates proper charts and do not cause any issues.");
+			// e.printStackTrace();
+		}
 	}
 }
