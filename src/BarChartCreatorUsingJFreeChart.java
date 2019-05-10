@@ -103,7 +103,7 @@ public class BarChartCreatorUsingJFreeChart extends JFrame {
 		JFreeChart barChart2 = ChartFactory.createBarChart(
 				"Parking Tickets by Violation Fee", 
 				"Ticket Description", 
-				"Ticket Fee", 
+				"Ticket Fee ($)", 
 				plotDataset, 
 				PlotOrientation.VERTICAL, 
 				false, //legend
