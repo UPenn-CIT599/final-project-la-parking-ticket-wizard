@@ -31,14 +31,16 @@ public class GUI extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		// Set up title of Stage
 		window = primaryStage;
 		window.setTitle("Parking Wizard Los Angeles");
 
+        // Define the GridPane for first scene
 		GridPane grid = new GridPane();
 		grid.setPadding(new Insets(10, 10, 10, 10));
 		grid.setVgap(8);
 		grid.setHgap(10);
-
+        // Define the GridPane for second scene  
 		GridPane BigDataPane = new GridPane();
 		BigDataPane.setPadding(new Insets(10, 10, 10, 10));
 		BigDataPane.setVgap(8);
@@ -51,14 +53,14 @@ public class GUI extends Application {
 		GridPane.setConstraints(xLabel, 0, 1);
 
 		TextField xInput = new TextField("6482261.8");
-//		xInput.setPromptText("123456.78");
+
 		GridPane.setConstraints(xInput, 1, 1);
 
 		Label yLabel = new Label("Y Coordinate Value:");
 		GridPane.setConstraints(yLabel, 0, 2);
 
 		TextField yInput = new TextField("1837556.1");
-//		yInput.setPromptText("123456.78");
+
 		GridPane.setConstraints(yInput, 1, 2);
 
 		Label dayLabel = new Label("Day of Week:");
@@ -68,7 +70,7 @@ public class GUI extends Application {
 		GridPane.setConstraints(dayLabelIntro, 2, 3);
 		
 		TextField day = new TextField("2");
-//		day.setPromptText("5");
+
 		GridPane.setConstraints(day, 1, 3);
 
 		Label hourLabel = new Label("Hour of Day:");
@@ -78,23 +80,21 @@ public class GUI extends Application {
 		GridPane.setConstraints(hourLabelIntro, 2, 4);
 
 		TextField hour = new TextField("13");
-//		hour.setPromptText("14");
+
 		GridPane.setConstraints(hour, 1, 4);
 		
-//		Button IniButton = new Button("Initialize System");
-//		GridPane.setConstraints(IniButton, 0, 5);
-//		IniButton.setOnAction(e->{initializeSystem();});
 
 		Button predictButton = new Button("Predict Tickets");
 		GridPane.setConstraints(predictButton, 1, 6);
 		predictButton.setOnAction(e -> {
+	        // Validate user input for X Y Day and Hour
 			boolean inputValid = false;
 			try {
 				X = Double.parseDouble(xInput.getText());
 				Y = Double.parseDouble(yInput.getText());
 				DAY = Integer.parseInt(day.getText());
 				HOUR = Integer.parseInt(hour.getText());
-	//			System.out.println("X Value: " + X + "   Y Value: " + Y); // TEST
+	//		Prompt message box if user input is invalid
 			} catch (NumberFormatException E) {
 				GUIMessageBox.display("Wrong Data Entry",
 						"Please enter ONLY number for" + " X,Y Coordinates, Day of Week and Hour of Day!");
@@ -108,7 +108,7 @@ public class GUI extends Application {
 			HeatMap HeatMap=new HeatMap();
 			HeatMap.GridGenerator();
 			Location userLocation = new Location(X, Y);
-	//		System.out.println(X+"  "+Y+"ZONE"+HeatMap.blockMatcher(userLocation));//TEST
+           // Check if user input location is in Los Angeles
 			if (HeatMap.blockMatcher(userLocation)==-1) {
 				{GUIMessageBox.display("NOT IN LOS ANGELES","The coordinate you input is not in Los Angeles. "
 						+ "Try Again!");
