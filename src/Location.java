@@ -78,7 +78,7 @@ public class Location {
 		HashMap<Integer, ParkingTickets> locationParkingTickets = new HashMap<Integer, ParkingTickets>();
 
 		for (Integer key : CleanedData.keySet()) {
-
+           // Check every ticket to see if the ticket is within the radius
 			Location targetLocation = new Location(CleanedData.get(key).getLatitude(),
 					CleanedData.get(key).getLongitude());
 			if (calculateDistance(currentLocation, targetLocation) <= Radius) {
