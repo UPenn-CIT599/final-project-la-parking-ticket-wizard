@@ -14,15 +14,14 @@ This is our project timeline:
 	* [x]	Location filtering (conversion…)
 	* [x]	Basic data analysis, graphing, etc.
 *	April 28 2019
-	* [ ]	Major software integration
-	* [ ]	Geo conversion
-	* [ ]	Come up with user questions and define analysis collections
-	* [ ]	User Interface
-	* [ ]	WEKA likelihood prediction
+	* [x]	Major software integration
+	* [x]	Come up with user questions and define analysis collections
+	* [x]	User Interface
 *	May 5 2019
-	* [ ]	Finishing/Fine tuning 4.28 week work
+	* [x]	Finishing/Fine tuning 4.28 week work
+	* [x]	GUI
 *	May 12 2019
-	* [ ]	Finalizing and packaging
+	* [x]	Finalizing and packaging
 
 Team Member: [Jin-Uk Luke Shin](https://github.com/jinukshin), [Chan Woo Yang](https://github.com/chanwooyang), [Weiwen Zhao](https://github.com/weiwenz33)
 
@@ -30,15 +29,43 @@ Team Member: [Jin-Uk Luke Shin](https://github.com/jinukshin), [Chan Woo Yang](h
 
 ## Software Design Overview
 
-The Parking Wizard software can be divided into two parts: Data Cleaning part and Data Analysis & Visualization part.
+The Parking Wizard software can be divided into three parts: Data Cleaning part, Data Analysis & Visualization part, and GUI part for the user interaction.
 
-Data Cleaning part is for cleaning up the raw data in the .csv file from the Kaggle. The raw data contains invalid data (e.g. issue date out of range, empty issue date/issue time), so such data needs to be removed before the data analysis. `FileHandler` class is used to collect all raw data from the .csv file and store them as the HashMap format. Then, this raw data is passed to `DataCleaner` class to remove any invalid data set and saves in the same HashMap format. Again, this cleaned data is passed back to the `FileHandler` class to generate the new .csv file with only valid data. All these processes are doen in the `DataCleaningRunner` class.
+Data Cleaning part is for cleaning up the raw data in the .csv file from the Kaggle. The raw data contains invalid data (e.g. issue date out of range, empty issue date/issue time), so such data needs to be removed before the data analysis. `FileHandler` class is used to collect all raw data from the .csv file and store them in the HashMap format. Then, this raw data is passed to `DataCleaner` class to remove any invalid data set and saves in another HashMap format. Again, this cleaned data is passed back to the `FileHandler` class to generate the new .csv file with only valid data. All these processes are doen in the `DataCleaningRunner` class.
 
-Data Analysis & Visualization part takes this cleaned data in the new .csv file (using `FileHandler` class)and divides it into smaller data batches based on the location aspect of each data (using `Location` class). Then, each data batch gets further processed by `ParkingTicketDataProcessor` class, creating different types HashMaps, for Data Analysis & Visualization methods (e.g. `GraphTicketsByHour`,`BarChartForViolationDescription`). These methods visually show the data analysis based on specific end users' interests. Finally, `LikelyhoodPredictor` (with the help of the WEKA API) class is used to give end users guidance/likelihood of getting a parking ticekt at the specific location at the specific time. All these classes are run in the `ParkingTicketRunner` class as the main class and this will work with `GUI` class to interact with end users.
+Data Analysis & Visualization part takes this cleaned data from the new .csv file (using `FileHandler` class) and can be used in two different cases. The first case is running the data analysis & visualization over the entire cleaned dataset to see the analysis of the entire parking tickets in the city of Los Angeles. The other case is running the data analysis & visualization over the specific area around the end user's location. In this case, the entire cleaned data set gets divided into smaller data batches based on the location aspect of each data (using `Location` class). Then, data batch around the user's location gets further processed by `ParkingTicketDataProcessor` class, creating different types HashMaps, for Data Analysis & Visualization methods (e.g. `GraphTicketsByHour`,`BarChartForViolationDescription`). These methods visually show the data analysis based on specific end users' interests. Finally, `LikelyhoodPredictor` class is used to give end users guidance/likelihood of getting a parking ticekt at the specific location at the specific time. All these classes are run in the `ParkingTicketRunner` class as the main.
+
+Thus, `ParkingTicketWizard` class combine `DataCleaningRunner` class and `ParkingTicketRunner` class to coordinate the workflow of the backend side of the program. And then, the workflow of the frontend side and the user interaction part are managed by the `GUI` class.
 
 For more details about each class and its method functionalities, please see the Javadoc in each java file in `../src` folder.
 
 For more details about our software design (Class functionalities, etc.), please see our [CRC Card document](https://docs.google.com/document/d/1vbhLUTb2iVLndC-xgaiJIaL0skswpUP1O-wqn1qqcRQ/edit?usp=sharing).
+
+********
+
+## Set Up The Envrionment Before Running The Program
+
+Due to the nature of the big data analysis (> 9 million dataset), it requires a change in the configuration parameter to avoid the `Java Heap Space Out of Memory Error`. Go to **Run** -> **Run Configurations...**. Then, from the left hand side, select `ParkingTicketWizard` and select `Arguments` tab on the center of the window. Then, in the `VM arguments:` field, fill it in like following:
+
+![run_config](../README_images/run_config "run_config")
+
+Repeat the same steps for `GUI` class.
+
+********
+
+## Running The Program
+
+Running `ParkingTicketWizard` class will run the overall backend side of the program: the data cleaning and data analysis & visualization. This will generate the image files of graphs and charts so that they can be used by the `GUI` class.
+
+RUunning `GUI` class will show the actual window of the program for the user interaction.
+
+![gui](../README_images/gui "gui")
+
+`Click for Coordinates from Map!` hyperlink leads to the website where an address can be converted into coordinate values. Then, a user can input the current location data with date and time information, and click `Predict Tickets` will calculate the likelihood of getting ticket based on user's inputs.
+
+`Big Data View` button will lead to the new window where different types of graphs and charts, analyzed over the entire parking tickets in LA. 
+
+![bigdataview](../README_images/bigdataview "bigdataview")
 
 ********
 
