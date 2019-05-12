@@ -61,7 +61,7 @@ public class ParkingTickets {
 	 * @param rawInfo
 	 * @return Converted int value or 0 if input data is invalid
 	 */
-	private int emptyIntCellHandler(String rawInfo) {
+	protected int emptyIntCellHandler(String rawInfo) {
 		if (rawInfo.isEmpty()) {
 			return 0;
 		} else {
@@ -81,7 +81,7 @@ public class ParkingTickets {
 	 * @param rawInfo
 	 * @return Converted double value or 0.0 if input data is invalid
 	 */
-	private double emptyDoubleCellHandler(String rawInfo) {
+	protected double emptyDoubleCellHandler(String rawInfo) {
 		if (rawInfo.isEmpty()) {
 			return 0.0;
 		} else {
@@ -119,21 +119,6 @@ public class ParkingTickets {
 		ticketInfoArray[16] = "" + this.fine;
 		ticketInfoArray[17] = "" + this.latitude;
 		ticketInfoArray[18] = "" + this.longitude;
-
-//		String[] ticketInfoArray = new String[13];
-//		ticketInfoArray[0] = this.ticketNumber;
-//		ticketInfoArray[1] = this.issueDate;
-//		ticketInfoArray[2] = "" + this.issueTime;
-//		ticketInfoArray[3] = this.rpState;
-//		ticketInfoArray[4] = "" + this.rpExpire;
-//		ticketInfoArray[5] = this.maker;
-//		ticketInfoArray[6] = this.bodyStyle;
-//		ticketInfoArray[7] = this.color;
-//		ticketInfoArray[8] = this.violationCode;
-//		ticketInfoArray[9] = this.violationDescription;
-//		ticketInfoArray[10] = "" + this.fine;
-//		ticketInfoArray[11] = "" + this.latitude;
-//		ticketInfoArray[12] = "" + this.longitude;
 
 		return ticketInfoArray;
 	}
