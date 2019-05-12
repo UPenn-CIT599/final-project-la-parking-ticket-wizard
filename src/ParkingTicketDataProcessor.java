@@ -34,7 +34,6 @@ public class ParkingTicketDataProcessor {
 	private HashMap<Integer, ParkingTickets> parkingTicketsRaw;
 	private String[] timeByHour = new String[24];
 	private ArrayList<String> sortedKeysByVioDesc;
-
 	private DecimalFormat df = new DecimalFormat("#.##");
 
 	// constructor
@@ -55,7 +54,7 @@ public class ParkingTicketDataProcessor {
 	 * @return
 	 */
 
-	public HashMap<String, Integer> ticketCountsByHour() {
+	public synchronized HashMap<String, Integer> ticketCountsByHour() {
 
 		HashMap<String, Integer> ticketCountsByTime = new HashMap<String, Integer>();
 
@@ -172,7 +171,7 @@ public class ParkingTicketDataProcessor {
 	 * @param curDate
 	 * @return
 	 */
-	public String dateToDayConversion(String curDate) {
+	public synchronized String dateToDayConversion(String curDate) {
 
 		String input_date = curDate;
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
@@ -195,7 +194,7 @@ public class ParkingTicketDataProcessor {
 	 * @return HashMap contains day of the week and number of violations per day of
 	 *         the week.
 	 */
-	public HashMap<String, Integer> ticketsByDay() {
+	public synchronized HashMap<String, Integer> ticketsByDay() {
 
 		HashMap<String, Integer> ticketsByDay = new HashMap<String, Integer>();
 
@@ -340,4 +339,13 @@ public class ParkingTicketDataProcessor {
 	public ArrayList<String> getSortedKeysByVioDesc() {
 		return sortedKeysByVioDesc;
 	}
+
+	public HashMap<Integer, ParkingTickets> getParkingTicketsRaw() {
+		return parkingTicketsRaw;
+	}
+
+	public String[] getTimeByHour() {
+		return timeByHour;
+	}
+		
 }
