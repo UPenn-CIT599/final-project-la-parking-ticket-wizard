@@ -42,12 +42,17 @@ For more details about each class and its method functionalities, please see the
 For more details about our software design (Class functionalities, etc.), please see our [CRC Card document](https://docs.google.com/document/d/1vbhLUTb2iVLndC-xgaiJIaL0skswpUP1O-wqn1qqcRQ/edit?usp=sharing).
 
 ********
+[//]: # (Image References)
+
+[run_config]: ./README_images/run_config.png "run_config"
+[gui]: ./README_images/gui.png "gui"
+[bigdataview]: ./README_images/bigdataview.png "bigdataview"
 
 ## Set Up The Envrionment Before Running The Program
 
 Due to the nature of the big data analysis (> 9 million dataset), it requires a change in the configuration parameter to avoid the `Java Heap Space Out of Memory Error`. Go to **Run** -> **Run Configurations...**. Then, from the left hand side, select `ParkingTicketWizard` and select `Arguments` tab on the center of the window. Then, in the `VM arguments:` field, fill it in like following:
 
-![run_config](../README_images/run_config "run_config")
+![run_config][run_config]
 
 Repeat the same steps for `GUI` class.
 
@@ -59,13 +64,13 @@ Running `ParkingTicketWizard` class will run the overall backend side of the pro
 
 RUunning `GUI` class will show the actual window of the program for the user interaction.
 
-![gui](../README_images/gui "gui")
+![gui][gui]
 
 `Click for Coordinates from Map!` hyperlink leads to the website where an address can be converted into coordinate values. Then, a user can input the current location data with date and time information, and click `Predict Tickets` will calculate the likelihood of getting ticket based on user's inputs.
 
 `Big Data View` button will lead to the new window where different types of graphs and charts, analyzed over the entire parking tickets in LA. 
 
-![bigdataview](../README_images/bigdataview "bigdataview")
+![bigdataview][bigdataview]
 
 ********
 
