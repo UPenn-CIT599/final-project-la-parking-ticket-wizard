@@ -76,7 +76,7 @@ Running `GUI` class will show the actual window of the program for the user inte
 
 ## Software Testing
 
-JUnit tests were created to test if method functions were working as expected. Please see `LikelyhoodPredictorTest.java`, `LocationTest.java`, and `ParkingTicketsTest.java`.
+JUnit tests were created to test if method functions were working as expected. Please see `GUITest.java`, `HeatMapTest.java`, `LikelyhoodPredictorTest.java`, `LocationTest.java`, `ParkingTicketDataProcessorTest.java`, and `ParkingTicketsTest.java`.
 
 *********
 
