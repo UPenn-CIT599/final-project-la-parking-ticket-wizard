@@ -42,24 +42,31 @@ class ParkingTicketsTest {
 
 	@Test
 	void testEmptyIntCellHandler() {
+		String[] columnRawData = { "1106506446", "2015-12-22T00:00:00", "1110", "", "", "CA", "201511", "", "BMW", "PA",
+				"BK", "1200 W MIRAMAR", "2A75", "1", "4000A1", "NO EVIDENCE OF REG", "50", "99999", "99999" };
+		parkingTicket = new ParkingTickets(columnRawData);
 		String wrongInput = "hello";
 		String emptyInput = "";
 		String correctInput = "32";
 		
-		assertEquals(0,wrongInput);
-		assertEquals(0,emptyInput);
-		assertEquals(32,correctInput);
+		assertEquals(0,parkingTicket.emptyIntCellHandler(wrongInput));
+		assertEquals(0,parkingTicket.emptyIntCellHandler(emptyInput));
+		assertEquals(32,parkingTicket.emptyIntCellHandler(correctInput));
 	}
 	
 	@Test
 	void testEmptyDoubleCellHandler() {
+		String[] columnRawData = { "1106506446", "2015-12-22T00:00:00", "1110", "", "", "CA", "201511", "", "BMW", "PA",
+				"BK", "1200 W MIRAMAR", "2A75", "1", "4000A1", "NO EVIDENCE OF REG", "50", "99999", "99999" };
+		parkingTicket = new ParkingTickets(columnRawData);
+		
 		String wrongInput = "hello";
 		String emptyInput = "";
 		String correctInput = "123.456";
 		
-		assertEquals(0.0,wrongInput);
-		assertEquals(0.0,emptyInput);
-		assertEquals(123.456,correctInput);
+		assertEquals(0.0,parkingTicket.emptyDoubleCellHandler(wrongInput));
+		assertEquals(0.0,parkingTicket.emptyDoubleCellHandler(emptyInput));
+		assertEquals(123.456,parkingTicket.emptyDoubleCellHandler(correctInput));
 	}
 	
 }
