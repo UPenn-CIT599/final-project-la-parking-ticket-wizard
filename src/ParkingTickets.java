@@ -61,7 +61,7 @@ public class ParkingTickets {
 	 * @param rawInfo
 	 * @return Converted int value or 0 if input data is invalid
 	 */
-	private int emptyIntCellHandler(String rawInfo) {
+	protected int emptyIntCellHandler(String rawInfo) {
 		if (rawInfo.isEmpty()) {
 			return 0;
 		} else {
@@ -81,7 +81,7 @@ public class ParkingTickets {
 	 * @param rawInfo
 	 * @return Converted double value or 0.0 if input data is invalid
 	 */
-	private double emptyDoubleCellHandler(String rawInfo) {
+	protected double emptyDoubleCellHandler(String rawInfo) {
 		if (rawInfo.isEmpty()) {
 			return 0.0;
 		} else {
