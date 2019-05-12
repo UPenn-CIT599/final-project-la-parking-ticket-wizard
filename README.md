@@ -62,7 +62,7 @@ Repeat the same steps for `GUI` class.
 
 Running `ParkingTicketWizard` class will run the overall backend side of the program: the data cleaning and data analysis & visualization. This will generate the image files of graphs and charts so that they can be used by the `GUI` class.
 
-RUunning `GUI` class will show the actual window of the program for the user interaction.
+Running `GUI` class will show the actual window of the program for the user interaction.
 
 ![gui][gui]
 
