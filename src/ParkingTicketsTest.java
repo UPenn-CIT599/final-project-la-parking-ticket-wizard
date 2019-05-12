@@ -40,4 +40,26 @@ class ParkingTicketsTest {
 		assertEquals("99999.0", instanceVariableArray[18]);
 	}
 
+	@Test
+	void testEmptyIntCellHandler() {
+		String wrongInput = "hello";
+		String emptyInput = "";
+		String correctInput = "32";
+		
+		assertEquals(0,wrongInput);
+		assertEquals(0,emptyInput);
+		assertEquals(32,correctInput);
+	}
+	
+	@Test
+	void testEmptyDoubleCellHandler() {
+		String wrongInput = "hello";
+		String emptyInput = "";
+		String correctInput = "123.456";
+		
+		assertEquals(0.0,wrongInput);
+		assertEquals(0.0,emptyInput);
+		assertEquals(123.456,correctInput);
+	}
+	
 }
