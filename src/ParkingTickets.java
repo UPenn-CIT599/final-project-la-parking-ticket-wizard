@@ -120,21 +120,6 @@ public class ParkingTickets {
 		ticketInfoArray[17] = "" + this.latitude;
 		ticketInfoArray[18] = "" + this.longitude;
 
-//		String[] ticketInfoArray = new String[13];
-//		ticketInfoArray[0] = this.ticketNumber;
-//		ticketInfoArray[1] = this.issueDate;
-//		ticketInfoArray[2] = "" + this.issueTime;
-//		ticketInfoArray[3] = this.rpState;
-//		ticketInfoArray[4] = "" + this.rpExpire;
-//		ticketInfoArray[5] = this.maker;
-//		ticketInfoArray[6] = this.bodyStyle;
-//		ticketInfoArray[7] = this.color;
-//		ticketInfoArray[8] = this.violationCode;
-//		ticketInfoArray[9] = this.violationDescription;
-//		ticketInfoArray[10] = "" + this.fine;
-//		ticketInfoArray[11] = "" + this.latitude;
-//		ticketInfoArray[12] = "" + this.longitude;
-
 		return ticketInfoArray;
 	}
 
