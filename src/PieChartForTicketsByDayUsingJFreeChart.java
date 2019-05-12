@@ -39,8 +39,12 @@ public class PieChartForTicketsByDayUsingJFreeChart extends ApplicationFrame {
 
 		// Dataset Generation
 		DefaultPieDataset dataset = new DefaultPieDataset();
-		for (String key : this.ticketByDay.keySet()) {
-			dataset.setValue(key, this.ticketByDay.get(key));
+		try {
+			for (String key : this.ticketByDay.keySet()) {
+				dataset.setValue(key, this.ticketByDay.get(key));
+			}
+		}
+		catch(java.util.ConcurrentModificationException e){	
 		}
 
 		// JFreeChart Call for PieChart and passing formats
