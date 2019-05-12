@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ParkingTicketRunner {
 
-	public static void main(String[] args) {
+	public void run() {
 
 		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
 		HashMap<Integer, ParkingTickets> hashMapPrakingTicketsRaw = fh.getParkingTicketsRaw();
