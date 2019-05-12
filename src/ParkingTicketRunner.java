@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class ParkingTicketRunner {
 
-	public void run() {
+	public static void main(String[] args) {
 
 		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
 		HashMap<Integer, ParkingTickets> hashMapPrakingTicketsRaw = fh.getParkingTicketsRaw();
@@ -52,14 +52,14 @@ public class ParkingTicketRunner {
 		System.out.println("************************************************************************************************************");
 		// BarChart Creation Steps
 		// Add delay to avoid any ConcurrentModificationException
-		BarChartCreatorUsingJFreeChart bccujfc = new BarChartCreatorUsingJFreeChart();
+		BarChartForTicketsByTop10Violations bcftvio = new BarChartForTicketsByTop10Violations(ticketByVioDes);
 		try {
 			TimeUnit.MINUTES.sleep(2);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		// BarChart for Top 10 Violation Ticket Type Descriptions
-		bccujfc.BarChartForViolationDescription(ticketByVioDes);
+		bcftvio.BarChartForViolationDescription();
 		// Add delay to avoid any ConcurrentModificationException
 		try {
 			TimeUnit.MINUTES.sleep(2);
@@ -67,7 +67,8 @@ public class ParkingTicketRunner {
 			e.printStackTrace();
 		}
 		// BarChart for Top 10 Violation Ticket Type Fines
-		bccujfc.BarChartForViolationFines(ticketByFine, sortedKeys);
+		BarChartForFinesOfTop10Violations bcffvio = new BarChartForFinesOfTop10Violations(ticketByFine, sortedKeys);
+		bcffvio.BarChartForViolationFines();
 		// PieChart Creation Steps
 		// Add delay to avoid any ConcurrentModificationException
 		try {
