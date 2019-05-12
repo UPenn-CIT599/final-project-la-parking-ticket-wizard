@@ -31,7 +31,7 @@ Team Member: [Jin-Uk Luke Shin](https://github.com/jinukshin), [Chan Woo Yang](h
 
 The Parking Wizard software can be divided into three parts: Data Cleaning part, Data Analysis & Visualization part, and GUI part for the user interaction.
 
-Data Cleaning part is for cleaning up the raw data in the .csv file from the Kaggle. The raw data contains invalid data (e.g. issue date out of range, empty issue date/issue time), so such data needs to be removed before the data analysis. `FileHandler` class is used to collect all raw data from the .csv file and store them in the HashMap format. Then, this raw data is passed to `DataCleaner` class to remove any invalid data set and saves in another HashMap format. Again, this cleaned data is passed back to the `FileHandler` class to generate the new .csv file with only valid data. All these processes are doen in the `DataCleaningRunner` class.
+Data Cleaning part is for cleaning up the raw data in the .csv file from the Kaggle. The raw data contains invalid data (e.g. issue date out of range, empty issue date/issue time), so such data needs to be removed before the data analysis. `FileHandler` class is used to collect all raw data from the .csv file and store them in the HashMap format. Then, this raw data is passed to `DataCleaner` class to remove any invalid data set and saves in another HashMap format. Again, this cleaned data is passed back to the `FileHandler` class to generate the new .csv file with only valid data. All these processes are done in the `DataCleaningRunner` class.
 
 Data Analysis & Visualization part takes this cleaned data from the new .csv file (using `FileHandler` class) and can be used in two different cases. The first case is running the data analysis & visualization over the entire cleaned dataset to see the analysis of the entire parking tickets in the city of Los Angeles (We call it Big Data Analysis). `ParkingDataProcessor` class runs data analytics to understand ticket issueing patterns. It analyze tickets by hourly, daily and each day's hourly ticket patterns. It also analyze 10 most commonly issued parking tickets in LA and its corresponding fines. Then, using JFreeChart API, four charts are generated for visualization of these data (two bar charts and two pie charts). These charts are accessible from the GUI interface button as well. All these classes are run in the `ParkingTicketRunner` class.The other case is running the data analysis & visualization over the specific area around the end user's location. In this case, the entire cleaned data set gets divided into smaller data batches based on the location aspect of each data (using `Location` class). Then, data batch around the user's location gets further processed by `ParkingTicketDataProcessor` class and provides likelyhood of getting the ticket.
 
@@ -39,7 +39,6 @@ Thus, `ParkingTicketWizard` class combine `DataCleaningRunner` class and `Parkin
 
 For more details about each class and its method functionalities, please see the Javadoc in each java file in `../src` folder.
 
-For more details about our software design (Class functionalities, etc.), please see our [CRC Card document](https://docs.google.com/document/d/1vbhLUTb2iVLndC-xgaiJIaL0skswpUP1O-wqn1qqcRQ/edit?usp=sharing).
 
 ********
 [//]: # (Image References)
@@ -49,6 +48,9 @@ For more details about our software design (Class functionalities, etc.), please
 [bigdataview]: ./README_images/bigdataview.png "bigdataview"
 
 ## Set Up The Envrionment Before Running The Program
+
+In order to properly run the program, you will need to add the following three Jar files to the project build path. jcommon-1.0.23.jar, jfreechart-1.0.19.jar and jfxrt.jar.  They can be downloaded from here: https://drive.google.com/a/seas.upenn.edu/file/d/1ZWeE9bt2mHrSw51PkqIOouyXXzmMOwJL/view?usp=sharing
+
 
 Due to the nature of the big data analysis (> 9 million dataset), it requires a change in the configuration parameter to avoid the `Java Heap Space Out of Memory Error`. Go to **Run** -> **Run Configurations...**. Then, from the left hand side, select `ParkingTicketWizard` and select `Arguments` tab on the center of the window. Then, in the `VM arguments:` field, fill it in like following:
 
