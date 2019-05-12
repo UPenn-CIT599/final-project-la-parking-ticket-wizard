@@ -47,21 +47,27 @@ public class PieChartForTicketsByHourUsingJFreeChart extends ApplicationFrame {
 			
 			HashMap<String, Integer> ticketCountsByTime = new HashMap<String, Integer>();
 			DefaultPieDataset dataset = new DefaultPieDataset();
-
-			for (Integer currentTicket : parkingTicketsRaw.keySet()) {
-				int ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();
-				for (int i = 0; i < 24; i++) {
-					if ((ticketTime >= i * 100) && (ticketTime < (i + 1) * 100)) {
-						int ticketCount = ticketCountsByTime.containsKey(timeByHour[i])
-								? ticketCountsByTime.get(timeByHour[i]) : 0;
-						ticketCount = ticketCount + 1;
-						ticketCountsByTime.put(timeByHour[i], ticketCount);
-						if(ticketCount >= 123000) {
-							dataset.setValue(timeByHour[i], ticketCount );
+			
+			try {
+				for (Integer currentTicket : parkingTicketsRaw.keySet()) {
+					int ticketTime = this.parkingTicketsRaw.get(currentTicket).getIssueTime();
+					for (int i = 0; i < 24; i++) {
+						if ((ticketTime >= i * 100) && (ticketTime < (i + 1) * 100)) {
+							int ticketCount = ticketCountsByTime.containsKey(timeByHour[i])
+									? ticketCountsByTime.get(timeByHour[i]) : 0;
+							ticketCount = ticketCount + 1;
+							ticketCountsByTime.put(timeByHour[i], ticketCount);
+							if(ticketCount >= 123000) {
+								dataset.setValue(timeByHour[i], ticketCount );
+							}
 						}
 					}
 				}
 			}
+			catch(java.util.ConcurrentModificationException e){
+			
+			}
+			
 			
 			// JFreeChart Call for PieChart and passing formats
 			JFreeChart pieChart1 = ChartFactory.createPieChart(
