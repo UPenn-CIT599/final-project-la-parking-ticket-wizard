@@ -10,6 +10,10 @@ import java.time.*;
  */
 public class DataCleaningRunner {
 
+	/**
+	 * Takes the raw data csv file and runs through the data cleaning process. Then,
+	 * the cleaned data sets are written in the new csv file.
+	 */
 	public void runDataCleaner() {
 		Clock clock = Clock.systemUTC();
 		System.out.println("Read Start: " + clock.instant());
