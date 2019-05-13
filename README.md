@@ -62,9 +62,9 @@ Repeat the same steps for `GUI` class.
 
 ## Running The Program
 
-Running `ParkingTicketWizard` class will run the overall backend side of the program: the data cleaning and data analysis & visualization. This will generate the image files of graphs and charts so that they can be used by the `GUI` class.
+Running `ParkingTicketWizard` class will run the overall backend side of the program: the data cleaning and data analysis & visualization. This will generate the image files of graphs and charts so that they can be used by the `GUI` class. The original dataset can be downloaded from Kaggle :https://www.kaggle.com/cityofLA/los-angeles-parking-citations After downloading the zip file from Kaggle, you will need to unzip it and place the `parking-citations.csv` file to the project folder which is one level above src folder. 
 
-Running `GUI` class will show the actual window of the program for the user interaction.
+Running `GUI` class will show the actual window of the program for the user interaction. To run `GUI` class directly you will need to place the cleaned dataset `parking-citations_cleaned.csv` file to he project folder which is one level above src folder. The cleaned dataset file can be downloaded from here: https://drive.google.com/a/seas.upenn.edu/file/d/1Z38yOiO5r1p_pa_bzT9iTif26cNiOSWb/view?usp=sharing
 
 ![gui][gui]
 
