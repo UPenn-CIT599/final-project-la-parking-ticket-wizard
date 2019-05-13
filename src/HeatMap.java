@@ -58,7 +58,7 @@ public class HeatMap {
 	 * @param A     The Location of interest
 	 * @param block a Location Array containing 4 coordinates of four corners of a
 	 *              block
-	 * @return
+	 * @return boolean
 	 */
 	public boolean inBlock(Location A, Location[] block) {
 
@@ -118,6 +118,7 @@ public class HeatMap {
 		}
 
         ArrayList<Integer> emptyBlocks= new ArrayList<Integer>();
+        // Write generated heatmap into a CSV file for later quick retrieval
 		try {
 			FileWriter writer = new FileWriter("HeatMap.csv", false);
 			PrintWriter printer = new PrintWriter(writer);
@@ -138,10 +139,10 @@ public class HeatMap {
 			}
 			printer.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
-
+       // Remove empty blocks 
 		for (Integer key: emptyBlocks) {
 			heatMap.remove(key);
 		}		

@@ -1,12 +1,3 @@
-/***
- * This class is the user interaction class utilizing JavaFX
- * It interacts with user by predicting likelyhood of getting
- * a parking tickets based on user input location and time.
- * There is also a big data view for user to see big data analysis results
- * of the dataset.
- * 
- * @author Weiwenz33
- */
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -25,9 +16,19 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+/***
+ * This class is the user interaction class utilizing JavaFX
+ * It interacts with user by predicting likelyhood of getting
+ * a parking tickets based on user input location and time.
+ * There is also a big data view for user to see big data analysis results
+ * of the dataset.
+ * 
+ * @author Weiwenz33
+ */
+
 public class GUI extends Application {
-	private static double X, Y;
-	private static int DAY, HOUR;
+	private static double xCoordinate, yCoordinate;
+	private static int theDay, theHour;
 	Stage window;
 	String message;
 
@@ -54,7 +55,9 @@ public class GUI extends Application {
 
 		Scene scene = new Scene(grid, 550, 300);
 		Scene bigDataScene = new Scene(BigDataPane, 820, 1000);
-
+		
+		
+         // Define elements on default scene
 		Label xLabel = new Label("X Coordinate Value:");
 		GridPane.setConstraints(xLabel, 0, 1);
 
@@ -86,34 +89,36 @@ public class GUI extends Application {
 		GridPane.setConstraints(hourLabelIntro, 2, 4);
 
 		TextField hour = new TextField("13");
-
 		GridPane.setConstraints(hour, 1, 4);
-
+		
+		Label predictionLabel = new Label("Prediction may take a few minutes");
+		GridPane.setConstraints(predictionLabel, 0, 6);
+		
 		Button predictButton = new Button("Predict Tickets");
 		GridPane.setConstraints(predictButton, 1, 6);
 		predictButton.setOnAction(e -> {
 			// Validate user input for X Y Day and Hour
 			boolean inputValid = false;
 			try {
-				X = Double.parseDouble(xInput.getText());
-				Y = Double.parseDouble(yInput.getText());
-				DAY = Integer.parseInt(day.getText());
-				HOUR = Integer.parseInt(hour.getText());
+				xCoordinate = Double.parseDouble(xInput.getText());
+				yCoordinate = Double.parseDouble(yInput.getText());
+				theDay = Integer.parseInt(day.getText());
+				theHour = Integer.parseInt(hour.getText());
 				// Prompt message box if user input is invalid
 			} catch (NumberFormatException E) {
 				GUIMessageBox.display("Wrong Data Entry",
 						"Please enter ONLY number for" + " X,Y Coordinates, Day of Week and Hour of Day!");
 			}
-			if (DAY >= 1 && DAY <= 7 && HOUR >= 0 && HOUR <= 24) {
+			if (theDay >= 1 && theDay <= 7 && theHour >= 0 && theHour < 24) {
 				inputValid = true;
 			} else {
 				GUIMessageBox.display("Wrong Data Entry",
-						"Hour Of Day should be between 0 " + "and 24, Day of Week should be between 1 and 7!");
+						"Hour Of Day should be between 0 " + "and 23, Day of Week should be between 1 and 7!");
 			}
 			HeatMap HeatMap = new HeatMap();
 			HeatMap.GridGenerator();
-			Location userLocation = new Location(X, Y);
-			// Check if user input location is in Los Angeles
+			Location userLocation = new Location(xCoordinate, yCoordinate);
+			// Check if user input location is in Los Angeles by checking against heatmap
 			if (HeatMap.blockMatcher(userLocation) == -1) {
 				{
 					GUIMessageBox.display("NOT IN LOS ANGELES",
@@ -126,7 +131,7 @@ public class GUI extends Application {
 			}
 
 		});
-
+        // Prepare png images for BigData View
 		Image image1 = new Image("File:BarChartForViolationDesc.png");
 		Image image2 = new Image("File:BarChartForViolationFee.png");
 		Image image3 = new Image("File:PieChartForViolationByDay.png");
@@ -134,12 +139,14 @@ public class GUI extends Application {
 
 		ImageView imv = new ImageView(image4);
 
-		// Add everything to grid
+	
 		Button BigDataButton = new Button("Big Data View");
 
 		GridPane.setConstraints(BigDataButton, 1, 7);
 		BigDataButton.setOnAction(e -> window.setScene(bigDataScene));
-
+		
+        // Set up buttons and its actions in BigDataView
+		
 		Button backToPrediction = new Button("Back To Prediction View");
 		GridPane.setConstraints(backToPrediction, 0, 0);
 		backToPrediction.setOnAction(e -> window.setScene(scene));
@@ -180,16 +187,20 @@ public class GUI extends Application {
 		BigDataPane.getChildren().addAll(backToPrediction, imv, BarCharVioDesc, BarCharVioFee, PieVioDay, PieVioHour);
         // Adding elements to the primary scene.
 		grid.getChildren().addAll(xLabel, xInput, yLabel, yInput, dayLabel, day, hourLabel, hour, predictButton,
-				BigDataButton, dayLabelIntro, hourLabelIntro, myHyperlink);
+				BigDataButton, dayLabelIntro, hourLabelIntro, myHyperlink, predictionLabel);
 
 		window.setScene(scene);
 		window.show();
 	}
 
+	/**
+	 * This helper method takes in the user input time and location then returns a string prediction
+	 * @return Likelyhood to get ticket
+	 */
 	private static String Predict() {
 
 		String predictionMsg = "No Data Available!";
-		Location userLocation = new Location(X, Y);
+		Location userLocation = new Location(xCoordinate, yCoordinate);
 		FileHandler fh = new FileHandler("parking-citations_cleaned.csv");
 		HashMap<Integer, ParkingTickets> allTickets = fh.getParkingTicketsRaw();
 		LikelyhoodPredictor lp = new LikelyhoodPredictor();
@@ -199,9 +210,9 @@ public class GUI extends Application {
 		ParkingTicketDataProcessor ptdp = new ParkingTicketDataProcessor(ticketsInLocation);
 
 		HashMap<String, HashMap<Integer, Integer>> ticketCountsAllDayHourly = ptdp.ticketsCountsByDayTime();
-		HashMap<Integer, Integer> ticketCountsDayHourly = ticketCountsAllDayHourly.get(dayConverter(DAY));
+		HashMap<Integer, Integer> ticketCountsDayHourly = ticketCountsAllDayHourly.get(dayConverter(theDay));
 
-		predictionMsg = lp.predict(HOUR, ticketCountsDayHourly);
+		predictionMsg = lp.predict(theHour, ticketCountsDayHourly);
 
 		return predictionMsg;
 	}

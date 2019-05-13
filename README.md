@@ -31,15 +31,14 @@ Team Member: [Jin-Uk Luke Shin](https://github.com/jinukshin), [Chan Woo Yang](h
 
 The Parking Wizard software can be divided into three parts: Data Cleaning part, Data Analysis & Visualization part, and GUI part for the user interaction.
 
-Data Cleaning part is for cleaning up the raw data in the .csv file from the Kaggle. The raw data contains invalid data (e.g. issue date out of range, empty issue date/issue time), so such data needs to be removed before the data analysis. `FileHandler` class is used to collect all raw data from the .csv file and store them in the HashMap format. Then, this raw data is passed to `DataCleaner` class to remove any invalid data set and saves in another HashMap format. Again, this cleaned data is passed back to the `FileHandler` class to generate the new .csv file with only valid data. All these processes are doen in the `DataCleaningRunner` class.
+Data Cleaning part is for cleaning up the raw data in the .csv file from the Kaggle. The raw data contains invalid data (e.g. issue date out of range, empty issue date/issue time), so such data needs to be removed before the data analysis. `FileHandler` class is used to collect all raw data from the .csv file and store them in the HashMap format. Then, this raw data is passed to `DataCleaner` class to remove any invalid data set and saves in another HashMap format. Again, this cleaned data is passed back to the `FileHandler` class to generate the new .csv file with only valid data. All these processes are done in the `DataCleaningRunner` class.
 
-Data Analysis & Visualization part takes this cleaned data from the new .csv file (using `FileHandler` class) and can be used in two different cases. The first case is running the data analysis & visualization over the entire cleaned dataset to see the analysis of the entire parking tickets in the city of Los Angeles. The other case is running the data analysis & visualization over the specific area around the end user's location. In this case, the entire cleaned data set gets divided into smaller data batches based on the location aspect of each data (using `Location` class). Then, data batch around the user's location gets further processed by `ParkingTicketDataProcessor` class, creating different types HashMaps, for Data Analysis & Visualization methods (e.g. `GraphTicketsByHour`,`BarChartForViolationDescription`). These methods visually show the data analysis based on specific end users' interests. Finally, `LikelyhoodPredictor` class is used to give end users guidance/likelihood of getting a parking ticekt at the specific location at the specific time. All these classes are run in the `ParkingTicketRunner` class as the main.
+Data Analysis & Visualization part takes this cleaned data from the new .csv file (using `FileHandler` class) and can be used in two different cases. The first case is running the data analysis & visualization over the entire cleaned dataset to see the analysis of the entire parking tickets in the city of Los Angeles (We call it Big Data Analysis). `ParkingDataProcessor` class runs data analytics to understand ticket issueing patterns. It analyze tickets by hourly, daily and each day's hourly ticket patterns. It also analyze 10 most commonly issued parking tickets in LA and its corresponding fines. Then, using JFreeChart API, four charts are generated for visualization of these data (two bar charts and two pie charts). These charts are accessible from the GUI interface button as well. All these classes are run in the `ParkingTicketRunner` class.The other case is running the data analysis & visualization over the specific area around the end user's location. In this case, the entire cleaned data set gets divided into smaller data batches based on the location aspect of each data (using `Location` class). Then, data batch around the user's location gets further processed by `ParkingTicketDataProcessor` class and provides likelyhood of getting the ticket.
 
 Thus, `ParkingTicketWizard` class combine `DataCleaningRunner` class and `ParkingTicketRunner` class to coordinate the workflow of the backend side of the program. And then, the workflow of the frontend side and the user interaction part are managed by the `GUI` class.
 
 For more details about each class and its method functionalities, please see the Javadoc in each java file in `../src` folder.
 
-For more details about our software design (Class functionalities, etc.), please see our [CRC Card document](https://docs.google.com/document/d/1vbhLUTb2iVLndC-xgaiJIaL0skswpUP1O-wqn1qqcRQ/edit?usp=sharing).
 
 ********
 [//]: # (Image References)
@@ -49,6 +48,9 @@ For more details about our software design (Class functionalities, etc.), please
 [bigdataview]: ./README_images/bigdataview.png "bigdataview"
 
 ## Set Up The Envrionment Before Running The Program
+
+In order to properly run the program, you will need to add the following three Jar files to the project build path. jcommon-1.0.23.jar, jfreechart-1.0.19.jar and jfxrt.jar.  They can be downloaded from here: https://drive.google.com/a/seas.upenn.edu/file/d/1ZWeE9bt2mHrSw51PkqIOouyXXzmMOwJL/view?usp=sharing
+
 
 Due to the nature of the big data analysis (> 9 million dataset), it requires a change in the configuration parameter to avoid the `Java Heap Space Out of Memory Error`. Go to **Run** -> **Run Configurations...**. Then, from the left hand side, select `ParkingTicketWizard` and select `Arguments` tab on the center of the window. Then, in the `VM arguments:` field, fill it in like following:
 
@@ -62,7 +64,7 @@ Repeat the same steps for `GUI` class.
 
 Running `ParkingTicketWizard` class will run the overall backend side of the program: the data cleaning and data analysis & visualization. This will generate the image files of graphs and charts so that they can be used by the `GUI` class.
 
-RUunning `GUI` class will show the actual window of the program for the user interaction.
+Running `GUI` class will show the actual window of the program for the user interaction.
 
 ![gui][gui]
 
@@ -76,10 +78,15 @@ RUunning `GUI` class will show the actual window of the program for the user int
 
 ## Software Testing
 
-JUnit tests were created to test if method functions were working as expected. Please see `LikelyhoodPredictorTest.java`, `LocationTest.java`, and `ParkingTicketsTest.java`.
+JUnit tests were created to test if method functions were working as expected. Please see `GUITest.java`, `HeatMapTest.java`, `LikelyhoodPredictorTest.java`, `LocationTest.java`, `ParkingTicketDataProcessorTest.java`, and `ParkingTicketsTest.java`.
 
 *********
 
 ## Developers' Notes
 
-As of Apr 21 2019, please keep in mind that the software development is still is progress, all java files in the repo are subject to change/removal. Major software integration (+ Code Cleanup) will be happened over next few days. You may see a few java classes with no functional methods written (e.g. `GUI` and `LikelyhoodPredictor` classes), but please note that they were created prior as templates for the future works. Furthermore, new extra classes are also highly likely to be created (as a completely new entity or splitted into more "DRY" classes) as the project progresses.
+When we combine all of data analysis and visualization methods into `ParkingTicketRunner` class during the last week of the project, we ran into the situation that it randomly threw different kinds of exceptions during the PieChart generation step using JFreeChart API. This was very hard for us to debug this because sometimes it worked fine and other times it threw exceptions, also different exceptions thrown at different times and all StackTrace message was pointing to classes inside the JFreeChart not in our codes. Based on our research, we found this was related to synchronization related issue as JFreeChart is not really thread safe. Also, this problem got aggregated (or mainly caused) since we deal with large dataset with various collections including many ArrayList, HashMap etc.. JFreeChart also runs into a problem with generating GUI with large dataset according to our web research.  
+
+We have spent a quite a lot of time to figure out this issue with various different kinds of experiments. During the process, we also realized even if Java showed exceptions but the chart and results were still correctly generated, especially, if we can contain the exception to a ConcurrentModificationException. I spoke to Arvind about this and he told me this is a subject we will run in 594 for about a month long.
+
+At the end, we used "synchronized" keyword for methods in `ParkingTicketDataProcessor` class which generate the data for pie charts and added the time delay between each chart generation step to mitigate the problem. I also divide chart generation methods into independent classes. After finding the recipe, we managed ro tun the program successfully (tried numerous times both on Mac and PC machines) and generated correct results for all cases. Since we have to give a sleep time between each chart generation, it took about 20mins to generate charts but we beleive this is Okay because the big data chart generation is one time thing. Charts are saved and available to an user at GUI interface as this is static data based on historical LA parking ticket violation data. 
+
