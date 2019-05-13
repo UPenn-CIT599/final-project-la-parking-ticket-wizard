@@ -7,7 +7,7 @@ import java.util.*;
  * projection. This class contains methods that can perform calculations on
  * location data.
  * 
- * @author Weiwenz33
+ * @author Weiwen Zhao
  *
  */
 public class Location {

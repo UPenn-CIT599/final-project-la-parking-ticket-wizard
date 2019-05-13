@@ -37,7 +37,7 @@ public class LikelyhoodPredictor {
          return "No historical ticket issued at this hour, park with your best judgement!";
 		}
 		int averageTicket = totalTickets / (24 - zeroCounter);
-		double percentile = currentHourTickets * 100 / totalTickets;
+
 		if (currentHourTickets >= averageTicket) {
 
 			return "You are at higher than average likelyhood to get ticketed, park with extreme caution!";
