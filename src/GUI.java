@@ -23,7 +23,7 @@ import javafx.stage.Stage;
  * There is also a big data view for user to see big data analysis results
  * of the dataset.
  * 
- * @author Weiwenz33
+ * @author Weiwen Zhao
  */
 
 public class GUI extends Application {

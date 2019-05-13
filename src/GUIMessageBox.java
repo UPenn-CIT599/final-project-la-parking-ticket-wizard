@@ -4,6 +4,14 @@ import javafx.scene.layout.*;
 import javafx.scene.control.*;
 import javafx.geometry.*;
 
+
+/**
+ * This class is for GUI class to communicate with user by prompting 
+ * messages. User will need to click "close window" button to continue
+ * the program.
+ * @author Weiwen Zhao
+ *
+ */
 public class GUIMessageBox {
 
     public static void display(String title, String message) {

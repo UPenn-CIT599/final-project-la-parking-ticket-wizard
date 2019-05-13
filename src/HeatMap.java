@@ -1,5 +1,6 @@
 /**
  * This class can generate a HeatMap for ticket counts in each city blocks. 
+ * @author Weiwen Zhao
  * 
  */
 import java.util.*;
