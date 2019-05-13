@@ -48,7 +48,7 @@ public class ParkingTicketRunner {
 		System.out.println("******************************************");
 		System.out.println("");
 		System.out.println("************************************************************************************************************");
-		System.out.println("Printing Charts for Ticket Information, this will take ~15mins to avoid JFreeChart's random throws exception.");
+		System.out.println("Printing Charts for Ticket Information, this will take ~20mins to avoid JFreeChart's random throws exception.");
 		System.out.println("************************************************************************************************************");
 		// BarChart Creation Steps
 		// Add delay to avoid any ConcurrentModificationException
@@ -81,7 +81,7 @@ public class ParkingTicketRunner {
 				hashMapPrakingTicketsRaw);
 		// Add delay to avoid any ConcurrentModificationException
 		try {
-			TimeUnit.MINUTES.sleep(3);
+			TimeUnit.MINUTES.sleep(4);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -94,14 +94,14 @@ public class ParkingTicketRunner {
 		}
 		// Add delay to avoid any ConcurrentModificationException
 		try {
-			TimeUnit.MINUTES.sleep(3);
+			TimeUnit.MINUTES.sleep(4);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 		PieChartForTicketsByDayUsingJFreeChart pccujfc = new PieChartForTicketsByDayUsingJFreeChart(
 				"PieChart for Parking Tickets", ticketsByDay);
 		try {
-			TimeUnit.MINUTES.sleep(3);
+			TimeUnit.MINUTES.sleep(4);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
